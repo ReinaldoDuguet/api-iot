@@ -29,10 +29,5 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-# Eclipse
-.settings/
-.project
-.classpath
-
 ### VS Code ###
 .vscode/
