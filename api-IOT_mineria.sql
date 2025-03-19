@@ -49,8 +49,7 @@ CREATE TABLE public.users (
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(100) NOT NULL,
     is_enabled BOOLEAN DEFAULT true,
-    is_expired BOOLEAN DEFAULT false,
-    is_locked BOOLEAN DEFAULT false,
+    is_blocked BOOLEAN DEFAULT false,
     credentials_expired BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
