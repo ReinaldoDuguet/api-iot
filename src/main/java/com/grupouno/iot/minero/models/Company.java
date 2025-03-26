@@ -70,7 +70,7 @@ public class Company {
     }
 
     public void setActive(boolean active) {
-        isActive = active;
+        this.isActive = active;
     }
 
     public LocalDateTime getCreatedAt() {

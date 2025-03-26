@@ -1,8 +1,15 @@
 package com.grupouno.iot.minero.models;
 
+import com.grupouno.iot.minero.util.JsonbConverter;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "sensors")
@@ -26,8 +33,10 @@ public class Sensor {
     @Column(name = "api_key", nullable = false, unique = true)
     private String apiKey;
 
+    @Type(JsonBinaryType.class)
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "metadata", columnDefinition = "jsonb")
-    private String metadata;
+    private Map<String, Object> metadata;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
@@ -83,11 +92,11 @@ public class Sensor {
         this.apiKey = apiKey;
     }
 
-    public String getMetadata() {
+    public Map<String, Object> getMetadata() {
         return metadata;
     }
 
-    public void setMetadata(String metadata) {
+    public void setMetadata(Map<String, Object> metadata) {
         this.metadata = metadata;
     }
 

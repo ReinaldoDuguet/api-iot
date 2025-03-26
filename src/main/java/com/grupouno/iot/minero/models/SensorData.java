@@ -1,7 +1,13 @@
 package com.grupouno.iot.minero.models;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Entity
 @Table(name = "sensor_data")
@@ -18,8 +24,10 @@ public class SensorData {
     @Column(name = "timestamp", nullable = false)
     private long timestamp;
 
-    @Column(name = "data", columnDefinition = "jsonb", nullable = false)
-    private String data;
+    @Type(JsonBinaryType.class)
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "data", columnDefinition = "jsonb")
+    private Map<String, Object> data;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -49,11 +57,11 @@ public class SensorData {
         this.timestamp = timestamp;
     }
 
-    public String getData() {
+    public Map<String, Object> getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Map<String, Object> data) {
         this.data = data;
     }
 
