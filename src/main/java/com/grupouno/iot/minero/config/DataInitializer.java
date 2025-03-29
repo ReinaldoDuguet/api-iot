@@ -110,17 +110,29 @@ public class DataInitializer {
                     return categoryRepository.save(cat);
                 });
 
-        // Sensor
-        Sensor sensor = new Sensor();
-        sensor.setName("Sensor de Prueba");
-        sensor.setApiKey("sensor-api-key-123");
-        sensor.setCategory(category);
-        sensor.setLocation(location);
-        sensor.setMetadata(Map.of("modelo", "ESP32"));
-        sensor.setActive(true);
-        sensor.setCreatedAt(LocalDateTime.now());
-        sensor.setUpdatedAt(LocalDateTime.now());
-        sensorRepository.save(sensor);
+        // Sensor zigbee mqtt Simulado para test
+        Sensor sensorMqtt = new Sensor();
+        sensorMqtt.setName("Sensor zigbee mqtt test");
+        sensorMqtt.setApiKey("sensor-zigbee-mqtt-key-15464813J57L");
+        sensorMqtt.setCategory(category);
+        sensorMqtt.setLocation(location);
+        sensorMqtt.setMetadata(Map.of("modelo", "Zigbee"));
+        sensorMqtt.setActive(true);
+        sensorMqtt.setCreatedAt(LocalDateTime.now());
+        sensorMqtt.setUpdatedAt(LocalDateTime.now());
+        sensorRepository.save(sensorMqtt);
+
+        // Sensor ESP32 tcp Simulado para test
+        Sensor sensorTcp = new Sensor();
+        sensorTcp.setName("Sensor esp32 tcp test");
+        sensorTcp.setApiKey("sensor-esp32-tcp-key-519494H1494948T");
+        sensorTcp.setCategory(category);
+        sensorTcp.setLocation(location);
+        sensorTcp.setMetadata(Map.of("modelo", "ESP32"));
+        sensorTcp.setActive(true);
+        sensorTcp.setCreatedAt(LocalDateTime.now());
+        sensorTcp.setUpdatedAt(LocalDateTime.now());
+        sensorRepository.save(sensorTcp);
 
         System.out.println("✅ Datos de prueba creados correctamente.");
     }
