@@ -1,6 +1,5 @@
 package com.grupouno.iot.minero.models;
 
-import com.grupouno.iot.minero.util.JsonbConverter;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;

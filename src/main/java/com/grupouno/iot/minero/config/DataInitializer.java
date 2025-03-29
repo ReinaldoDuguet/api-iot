@@ -6,8 +6,9 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
+
+// Inicializa data para testing de consumidor kafka
 
 @Component
 public class DataInitializer {
@@ -18,6 +19,8 @@ public class DataInitializer {
     private final LocationRepository locationRepository;
     private final SensorCategoryRepository categoryRepository;
     private final SensorRepository sensorRepository;
+    private final RoleRepository roleRepository;
+
 
     public DataInitializer(
             CountryRepository countryRepository,
@@ -25,7 +28,8 @@ public class DataInitializer {
             CompanyRepository companyRepository,
             LocationRepository locationRepository,
             SensorCategoryRepository categoryRepository,
-            SensorRepository sensorRepository
+            SensorRepository sensorRepository,
+            RoleRepository roleRepository
     ) {
         this.countryRepository = countryRepository;
         this.cityRepository = cityRepository;
@@ -33,10 +37,25 @@ public class DataInitializer {
         this.locationRepository = locationRepository;
         this.categoryRepository = categoryRepository;
         this.sensorRepository = sensorRepository;
+        this.roleRepository = roleRepository;
+
+    }
+
+    private void createRoleIfNotExists(String roleName) {
+        roleRepository.findByName(roleName).orElseGet(() -> {
+            Role role = new Role();
+            role.setName(roleName);
+            role.setCreatedAt(LocalDateTime.now());
+            return roleRepository.save(role);
+        });
     }
 
     @PostConstruct
     public void initData() {
+
+        // Crear roles base si no existen
+        createRoleIfNotExists("ADMIN");
+        createRoleIfNotExists("USER");
 
         if (sensorRepository.count() > 0) return;
 

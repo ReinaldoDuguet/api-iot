@@ -1,38 +1,23 @@
-package com.grupouno.iot.minero.listener;
+package com.grupouno.iot.minero.listener; // Paquete actual donde está el listener
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grupouno.iot.minero.dto.MeasurementDTO;
-import com.grupouno.iot.minero.dto.SensorMessageDTO;
-import com.grupouno.iot.minero.services.SensorDataService;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
+import com.grupouno.iot.minero.services.SensorKafkaProcessor; // Inyectamos la clase que procesa el mensaje
+import org.apache.kafka.clients.consumer.ConsumerRecord; // Clase de Kafka que representa un mensaje
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty; // Para habilitar esta clase solo si iot.mode=kafka
+import org.springframework.kafka.annotation.KafkaListener; // Anotación para escuchar tópicos
+import org.springframework.stereotype.Component; // Declara esta clase como un componente Spring
 
 @Component
-@ConditionalOnProperty(name = "iot.mode", havingValue = "kafka")
+@ConditionalOnProperty(name = "iot.mode", havingValue = "kafka") // Se habilita solo si 'iot.mode=kafka' en application.properties
 public class SensorKafkaConsumer {
 
-    private final SensorDataService sensorDataService;
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final SensorKafkaProcessor processor; // Dependencia que hace el trabajo real de procesar el mensaje
 
-    public SensorKafkaConsumer(SensorDataService sensorDataService) {
-        this.sensorDataService = sensorDataService;
+    public SensorKafkaConsumer(SensorKafkaProcessor processor) {
+        this.processor = processor;
     }
 
-    @KafkaListener(topics = "iot-sensor-data", groupId = "iot-minero-group")
+    @KafkaListener(topics = "iot-sensor-data", groupId = "iot-minero-group") // Listener activo en este tópico
     public void consume(ConsumerRecord<String, String> record) {
-        try {
-            SensorMessageDTO dto = mapper.readValue(record.value(), SensorMessageDTO.class);
-
-            if (dto.getJson_data() != null) {
-                for (MeasurementDTO measurement : dto.getJson_data()) {
-                    sensorDataService.processMeasurement(dto.getApi_key(), measurement);
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("❌ Error processing Kafka message:");
-            e.printStackTrace();
-        }
+        processor.processKafkaMessage(record.value()); // Solo delega la lógica al procesador
     }
 }

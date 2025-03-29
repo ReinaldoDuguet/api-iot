@@ -12,7 +12,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -45,6 +47,17 @@ public class User {
     // Relación con UserRole (One-to-Many)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserRole> userRoles;
+
+    public User(String username, String passwordHash, List<UserRole> userRoles) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.userRoles = userRoles;
+        this.isEnabled = true;
+        this.isBlocked = false;
+        this.credentialsExpired = false;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 
     // Getters y Setters
     public Long getId() {
