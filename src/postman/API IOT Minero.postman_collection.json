@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "eb9247a1-84cf-47c4-b854-2c6849e8cc87",
+		"name": "API IOT Minero",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12122436"
+	},
+	"item": [
+		{
+			"name": "Simulator mqtt",
+			"item": [
+				{
+					"name": "Toggle Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/simulator/start",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"simulator",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pause Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/simulator/pause",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"simulator",
+								"pause"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resume Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/simulator/resume",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"simulator",
+								"resume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Simulator Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/simulator/status",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"simulator",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Simulator tcp",
+			"item": [
+				{
+					"name": "Resume Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/simulator/esp32/resume",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"esp32",
+								"resume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/simulator/esp32/start",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"esp32",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stop Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/simulator/esp32/stop",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"esp32",
+								"stop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pause Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/simulator/esp32/pause",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"esp32",
+								"pause"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Simulator TCP Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/simulator/esp32/status",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"esp32",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User - Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"Juan P\\u00e9rez\",\n  \"password\": \"1234\",\n  \"role\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User - Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User - Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User - Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Juan P\\u00e9rez Actualizado\",\n  \"email\": \"juan.perez@example.com\",\n  \"password\": \"nuevo-password\",\n  \"role\": \"USER\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User - Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080",
+			"type": "default"
+		}
+	]
+}
