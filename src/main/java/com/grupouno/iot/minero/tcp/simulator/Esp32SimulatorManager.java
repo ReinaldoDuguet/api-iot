@@ -2,6 +2,7 @@ package com.grupouno.iot.minero.tcp.simulator;
 
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 // Manages lifecycle of the ESP32 TCP simulator: start, stop, pause, resume
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "esp32.simulator.tcp.enabled", havingValue = "true")
 public class Esp32SimulatorManager {
 
     private final Esp32SimulatorConfig config;
