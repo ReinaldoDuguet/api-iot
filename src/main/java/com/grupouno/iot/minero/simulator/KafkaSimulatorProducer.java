@@ -8,6 +8,7 @@ import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.Collections;
 import java.util.concurrent.*;
 
 @Component
+@ConditionalOnProperty(name = "simulator.kafka.enabled", havingValue = "true")
 public class KafkaSimulatorProducer {
 
     private static final Logger log = LoggerFactory.getLogger(KafkaSimulatorProducer.class);
