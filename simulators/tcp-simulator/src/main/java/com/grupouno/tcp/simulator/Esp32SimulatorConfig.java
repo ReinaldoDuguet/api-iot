@@ -1,4 +1,4 @@
-package com.grupouno.tcp;
+package com.grupouno.tcp.simulator;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
