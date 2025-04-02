@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class KafkaSimulatorConfig {
 
-    private boolean enabled = true; // Simulator is enabled by default
+    private boolean enabled = false; // Simulator is enabled by default
 
     public boolean isEnabled() {
         return enabled;

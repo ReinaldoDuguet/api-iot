@@ -1,4 +1,4 @@
-package com.grupouno.tcp;
+package com.grupouno.tcp.simulator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
