@@ -1,13 +1,12 @@
 package com.grupouno.iot.minero.services.impl;
 
-import com.grupouno.iot.minero.dto.UserDTO;
-import com.grupouno.iot.minero.dto.UserUpdateDTO;
+import com.grupouno.iot.minero.simulator.dto.UserDTO;
+import com.grupouno.iot.minero.simulator.dto.UserUpdateDTO;
 import com.grupouno.iot.minero.models.Role;
 import com.grupouno.iot.minero.models.User;
 import com.grupouno.iot.minero.models.UserRole;
 import com.grupouno.iot.minero.repository.RoleRepository;
 import com.grupouno.iot.minero.repository.UserRepository;
-import com.grupouno.iot.minero.repository.UserRoleRepository;
 import com.grupouno.iot.minero.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

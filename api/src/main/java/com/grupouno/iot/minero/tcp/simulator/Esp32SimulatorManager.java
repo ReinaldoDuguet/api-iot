@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "esp32.simulator.tcp.enabled", havingValue = "true")
 public class Esp32SimulatorManager {
 
     private final Esp32SimulatorConfig config;
