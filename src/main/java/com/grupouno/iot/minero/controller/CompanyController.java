@@ -1,6 +1,8 @@
 package com.grupouno.iot.minero.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grupouno.iot.minero.dto.CompanyDTO;
+import com.grupouno.iot.minero.exceptions.EntityNotFoundException;
 import com.grupouno.iot.minero.services.CompanyService;
 
 @RestController
@@ -54,8 +57,17 @@ public class CompanyController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {
-        companyService.deleteCompany(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Map<String, String>> deleteCompany(@PathVariable Long id) {
+        try {
+            companyService.deleteCompany(id);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Se ha eliminado la entidad con id " + id);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException ex) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "La compañía con id " + id + " no fue encontrada.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
+
 }
