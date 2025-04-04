@@ -18,7 +18,7 @@ import com.grupouno.iot.minero.dto.CompanyDTO;
 import com.grupouno.iot.minero.services.CompanyService;
 
 @RestController
-@RequestMapping("/api/companies")
+@RequestMapping("/api/v1/companies")
 public class CompanyController {
 	private final CompanyService companyService;
 
@@ -47,9 +47,11 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CompanyDTO> updateCompany(@PathVariable Long id, @RequestBody CompanyDTO companyDTO) {
-        CompanyDTO updatedCompany = companyService.updateCompany(id, companyDTO);
-        return ResponseEntity.ok(updatedCompany);
+        CompanyDTO updatedCompanyDTO = companyService.updateCompany(id, companyDTO);
+        return ResponseEntity.ok(updatedCompanyDTO);
     }
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCompany(@PathVariable Long id) {

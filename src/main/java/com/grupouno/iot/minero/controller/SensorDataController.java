@@ -18,7 +18,7 @@ import com.grupouno.iot.minero.services.SensorDataService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/sensor-data")
+@RequestMapping("/api/v1/sensor-data")
 @RequiredArgsConstructor
 public class SensorDataController {
 

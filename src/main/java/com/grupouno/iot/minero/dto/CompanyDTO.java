@@ -1,6 +1,7 @@
 package com.grupouno.iot.minero.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +16,5 @@ public class CompanyDTO {
     private boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<Long> locationIds;
 }

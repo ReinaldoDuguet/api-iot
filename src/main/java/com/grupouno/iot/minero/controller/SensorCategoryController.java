@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sensor-categories")
+@RequestMapping("/api/v1/sensor-categories")
 public class SensorCategoryController {
 
     private final SensorCategoryService service;
