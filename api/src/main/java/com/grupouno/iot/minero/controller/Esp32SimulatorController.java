@@ -1,16 +1,17 @@
 package com.grupouno.iot.minero.controller;
 
 import com.grupouno.iot.minero.tcp.simulator.Esp32SimulatorManager;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @RequestMapping("/api/v1/simulator/esp32")
-@RequiredArgsConstructor
 public class Esp32SimulatorController {
 
     private final Esp32SimulatorManager simulatorManager;
+
+    public Esp32SimulatorController(Esp32SimulatorManager manager) {
+        this.simulatorManager = manager;
+    }
 
     @PostMapping("/start")
     public ResponseEntity<String> start() {

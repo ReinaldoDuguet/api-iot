@@ -1,8 +1,8 @@
 package com.grupouno.iot.minero.simulator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grupouno.iot.minero.dto.MeasurementDTO;
-import com.grupouno.iot.minero.dto.SensorMessageDTO;
+import com.grupouno.iot.minero.simulator.dto.MeasurementDTO;
+import com.grupouno.iot.minero.simulator.dto.SensorMessageDTO;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;

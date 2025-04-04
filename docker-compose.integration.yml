@@ -31,19 +31,21 @@ services:
   # Kafka Broker
   kafka:
     image: confluentinc/cp-kafka:7.4.0
+    hostname: kafka
     container_name: kafka
     restart: unless-stopped
     depends_on:
       - zookeeper
     ports:
       - "9092:9092"
+      - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://0.0.0.0:29092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_HOST:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_HOST
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     networks:
@@ -77,10 +79,11 @@ services:
       - postgres
       - kafka
     environment:
-      SPRING_PROFILES_ACTIVE: docker
+      SPRING_PROFILES_ACTIVE: integration
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_iot
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
     networks:
       - iot-net
     healthcheck:
@@ -97,19 +100,21 @@ services:
     container_name: tcp-simulator
     restart: unless-stopped
     # Descomenta si necesitas exponer endpoints externos desde el simulador
-    # ports:
-    #   - "8081:8080"
+    ports:
+      - "8082:8082"
     depends_on:
       - api
     environment:
+      SPRING_PROFILES_ACTIVE: integration
       ESP32_SIMULATOR_API_KEY: sensor-esp32-tcp-key-519494H1494948T
       ESP32_SIMULATOR_PORT: 6000
       ESP32_SIMULATOR_HOST: api
       ESP32_SIMULATOR_INTERVAL_MILLIS: 2500
+      #ESP32_SIMULATOR_TCP_ENABLE: true
     networks:
       - iot-net
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/status"]
+      test: ["CMD", "curl", "-f", "http://localhost:8082/status"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -122,19 +127,20 @@ services:
     container_name: kafka-simulator
     restart: unless-stopped
     # Descomenta si necesitas exponer endpoints externos desde el simulador
-    # ports:
-    #   - "8082:8080"
+    ports:
+      - "8084:8084"
     depends_on:
       - kafka
     environment:
-      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      SPRING_PROFILES_ACTIVE: integration
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KAFKA_SIMULATOR_API_KEY: sensor-zigbee-mqtt-key-15464813J57L
       KAFKA_SIMULATOR_DELAY_MS: 1000
       KAFKA_TOPIC: iot-sensor-data
     networks:
       - iot-net
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/status"]
+      test: ["CMD", "curl", "-f", "http://localhost:8084/status"]
       interval: 10s
       timeout: 5s
       retries: 3

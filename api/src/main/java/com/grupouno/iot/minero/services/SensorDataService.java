@@ -3,7 +3,7 @@ package com.grupouno.iot.minero.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupouno.iot.minero.dao.SensorDao;
 import com.grupouno.iot.minero.dao.SensorDataDao;
-import com.grupouno.iot.minero.dto.MeasurementDTO;
+import com.grupouno.iot.minero.simulator.dto.MeasurementDTO;
 import com.grupouno.iot.minero.models.Sensor;
 import com.grupouno.iot.minero.models.SensorData;
 import org.springframework.stereotype.Service;

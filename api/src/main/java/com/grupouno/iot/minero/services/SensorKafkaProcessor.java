@@ -1,8 +1,8 @@
 package com.grupouno.iot.minero.services; // Está en la capa de servicios
 
 import com.fasterxml.jackson.databind.ObjectMapper; // Jackson para convertir JSON a objetos Java
-import com.grupouno.iot.minero.dto.MeasurementDTO; // DTO de medición
-import com.grupouno.iot.minero.dto.SensorMessageDTO; // DTO del mensaje completo de Kafka
+import com.grupouno.iot.minero.simulator.dto.MeasurementDTO; // DTO de medición
+import com.grupouno.iot.minero.simulator.dto.SensorMessageDTO; // DTO del mensaje completo de Kafka
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

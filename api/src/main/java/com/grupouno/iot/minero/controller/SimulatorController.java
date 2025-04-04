@@ -1,6 +1,7 @@
 package com.grupouno.iot.minero.controller;
 
 import com.grupouno.iot.minero.simulator.KafkaSimulatorConfig;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/simulator")
+@ConditionalOnProperty(name = "simulator.kafka.enabled", havingValue = "true")
 public class SimulatorController {
 
     private final KafkaSimulatorConfig config;

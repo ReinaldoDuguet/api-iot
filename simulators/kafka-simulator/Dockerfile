@@ -6,8 +6,7 @@ LABEL description="Simulador Kafka para IoT Minero"
 LABEL app="iot-minero-kafka-simulator"
 
 WORKDIR /app
-COPY target/*.jar app.jar
+COPY target/kafka-simulator-0.0.1-SNAPSHOT.jar app.jar
 # Expone el puerto 9092 para el API
-EXPOSE 9092
+EXPOSE 8084
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
