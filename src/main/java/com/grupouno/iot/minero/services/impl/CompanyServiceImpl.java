@@ -65,9 +65,19 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO updateCompany(Long id, CompanyDTO companyDTO) {
+    	// Excepción para id de compañía ya en uso
         Company existingCompany = companyRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Company not found with id: " + id));
 
+        // Verificar si el ApiKey ya está en uso
+        if (companyDTO.getApiKey() != null && !companyDTO.getApiKey().equals(existingCompany.getApiKey())) {
+            boolean apiKeyExists = companyRepository.existsByApiKey(companyDTO.getApiKey());
+            if (apiKeyExists) {
+                throw new ApiKeyAlreadyExistsException("The API Key is already in use by another company.");
+            }
+            existingCompany.setApiKey(companyDTO.getApiKey());
+        }
+        
         if (companyDTO.getName() != null && !companyDTO.getName().equals(existingCompany.getName())) {
             existingCompany.setName(companyDTO.getName());
         }
