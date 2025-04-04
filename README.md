@@ -1,72 +1,26 @@
-# Proyecto: Plataforma IoT Minera
+# IoT Mining System - Simulación y Procesamiento de Sensores en Tiempo Real
 
-Este proyecto implementa una **plataforma de monitoreo IoT para el sector minero** desarrollada en **Java con Spring Boot**, que permite la recolección de datos desde sensores físicos (ESP32 y Zigbee), simuladores TCP/Kafka, almacenamiento en PostgreSQL, y el procesamiento de datos en tiempo real.
-
----
-
-## Tecnologías Utilizadas
-
-- **Java 17**
-- **Spring Boot**
-- **Spring Data JPA**
-- **Spring Security**
-- **PostgreSQL**
-- **Kafka (Confluent)**
-- **TCP/IP Socket Server**
-- **Docker y Docker Compose**
-- **Librerías Adicionales**: Lombok, Jackson, Hibernate Types (JSONB)
+Este proyecto representa una arquitectura moderna orientada a microservicios para un sistema de **telemetría y simulación de sensores IoT** en un entorno minero. Su propósito es simular sensores físicos (como los basados en **ESP32 vía TCP/IP** y **Zigbee vía MQTT/Kafka**) y procesar los datos en tiempo real a través de una API REST desarrollada en **Java Spring Boot**.
 
 ---
 
-## Arquitectura del Proyecto
+## 🧠 Descripción General
 
-### Capas principales:
+El sistema está compuesto por 3 microservicios principales:
 
-- **controller/**: Controladores REST
-- **dto/**: Data Transfer Objects
-- **dao/**: Acceso a entidades a bajo nivel
-- **models/**: Entidades del dominio (User, Sensor, SensorData, etc.)
-- **repository/**: Interfaces JPA para acceso a datos
-- **services/**:
-    - `impl`: Lógica de negocio para usuarios y sensores
-    - `simulator`: Simuladores Kafka
-    - `tcp`: Procesamiento TCP
-- **simulator/**: Simuladores de ESP32 por TCP
-- **tcp/**: Lógica base para servidor TCP listener
-- **config/**: Seguridad, inicializadores y configuraciones
-- **postman/**: Colección de pruebas
+1. **API IoT (api)**  
+   Gestiona sensores, ubicaciones, empresas, roles y permisos. Expone endpoints REST y recibe datos de sensores por TCP o Kafka.
+
+2. **Simulador TCP (tcp-simulator)**  
+   Simula sensores físicos que envían datos mediante conexiones TCP/IP, imitando el comportamiento de dispositivos ESP32.
+
+3. **Simulador Kafka (kafka-simulator)**  
+   Simula sensores Zigbee que publican datos en tópicos Kafka (como si estuviesen conectados por un Gateway MQTT/Zigbee).
 
 ---
 
-## Funcionalidades Clave
+### **Estructura del JSON** que recibe el servidor TCP/MQTT:
 
-### 1. **Usuarios**
-
-- Registro, modificación, eliminación (CRUD)
-- Roles y permisos (ADMIN / USER)
-- Autenticación con Spring Security (JWT en desarrollo)
-- Endpoints:
-    - `GET /api/v1/users`
-    - `GET /api/v1/users/{id}`
-    - `POST /api/v1/users`
-    - `PUT /api/v1/users/{id}`
-    - `DELETE /api/v1/users/{id}`
-
-### 2. **Simulador Kafka (Sensor Zigbee)**
-
-- Envió de datos simulados por Kafka
-- Configurable mediante `KafkaSimulatorConfig`
-- Control REST: `SimulatorController`
-- Endpoints REST:
-    - `/api/v1/simulator/kafka/start`
-    - `/api/v1/simulator/kafka/stop`
-    - `/api/v1/simulator/kafka/status`
-
-### 3. **Servidor TCP (Sensor ESP32)**
-
-- Servidor TCP escucha en puerto definido (`application.properties`)
-- Procesa datos JSON en tiempo real desde dispositivos externos
-- Estructura del JSON:
 ```json
 {
   "api_key": "sensor-api-key-123",
@@ -79,91 +33,130 @@ Este proyecto implementa una **plataforma de monitoreo IoT para el sector minero
   ]
 }
 ```
-
-- Clases:
-    - `TcpSensorServer`, `TcpSensorListener`, `SensorDataTCPProcessor`
-
-### 4. **Simulador ESP32 TCP (Productor)**
-
-- Crea conexiones TCP simuladas cada X segundos
-- Envia datos a `localhost:9000` (o IP externa)
-- Control REST:
-    - `/api/v1/simulator/esp32/start`
-    - `/api/v1/simulator/esp32/stop`
-    - `/api/v1/simulator/esp32/status`
-    - `/api/v1/simulator/esp32/pause`
-    - `/api/v1/simulator/esp32/resume`
-
-- Archivos:
-    - `Esp32Simulator`, `Esp32SimulatorManager`, `Esp32SimulatorConfig`
-
 ---
+### 📦 Arquitectura del Proyecto
 
-## Directorio `postman/`
-
-Ubica dentro de esta carpeta los archivos `.json` con la colección de pruebas para Postman. Puedes importarla directamente para probar:
-
-- Endpoints REST
-- Simulación de datos Kafka
-- Simulación de datos TCP
-
-> Recomendado: nombrar el archivo como `iot-minero.postman_collection.json`
-
----
-
-## Variables de Configuración
-
-### application.properties
-```properties
-# TCP Server
-tcp.server.enabled=true
-tcp.server.port=9000
-
-# Kafka
-kafka.bootstrap-servers=localhost:9092
-kafka.topic.sensor-data=sensor-data-topic
-
-# Base de Datos
-spring.datasource.url=jdbc:postgresql://localhost:5432/iot_minero
-spring.datasource.username=postgres
-spring.datasource.password=tu_contraseña
+```
+iot-mining-system/
+├── api/                  # API REST principal con Spring Boot
+├── simulators/
+│   ├── kafka-simulator/  # Microservicio para simular sensores Kafka/Zigbee
+│   └── tcp-simulator/    # Microservicio para simular sensores TCP/ESP32
+├── docker/
+│   ├── docker-compose.yml   # Orquestación completa del sistema
+│   └── .env                 # Variables de entorno (opcional)
+└── postman/             # Colección de pruebas Postman para endpoints y simuladores
 ```
 
 ---
 
-## Ejecución Local
+## 🐳 Microservicios Dockerizados
 
-1. Clona el repositorio
-2. Inicia PostgreSQL y Kafka
-3. Ejecuta la app desde tu IDE o `./mvnw spring-boot:run`
-4. Usa Postman o simuladores TCP/Kafka
+### 1. API IoT
 
----
-
-## Docker (Pendiente)
-
-Planeado:
-- Docker Compose para Kafka, PostgreSQL y App Java
-- Simuladores en contenedores separados (TCP / Kafka)
+| Variable                           | Descripción                                       |
+|------------------------------------|---------------------------------------------------|
+| `SPRING_PROFILES_ACTIVE`           | Entorno de ejecución (`integration` recomendado) |
+| `DB_HOST`, `DB_PORT`, `DB_NAME`    | Configuración PostgreSQL                         |
+| `KAFKA_BOOTSTRAP_SERVERS`          | Broker Kafka (`kafka:9092`)                      |
+| `TCP_ENABLED`                      | Habilita recepción por TCP                       |
+| `KAFKA_ENABLED`                    | Habilita recepción por Kafka                     |
 
 ---
 
-## Testing
+### 2. TCP Simulator
 
-- JUnit 5 + Mockito
-- Tests implementados:
-    - `UserControllerTest`
-    - Tests de simuladores TCP/Kafka (en desarrollo)
-
----
-
-## Contribuciones Futuras
-
-- Autenticación JWT
-- Dashboard frontend (React o Angular)
-- Exportación de datos
-- Alertas en tiempo real
-- Validaciones avanzadas para dispositivos y roles
+| Variable                      | Descripción                                           |
+|-------------------------------|-------------------------------------------------------|
+| `SPRING_PROFILES_ACTIVE`      | Entorno de ejecución                                 |
+| `TCP_SIMULATOR_API_KEY`       | ApiKey del sensor simulado                           |
+| `TCP_SIMULATOR_DELAY_MS`      | Frecuencia de envío de datos en milisegundos         |
+| `TCP_SERVER_HOST`             | IP/host objetivo donde enviar los datos              |
+| `TCP_SERVER_PORT`             | Puerto objetivo del servidor TCP (ej. 9999)          |
 
 ---
 
+### 3. Kafka Simulator
+
+| Variable                        | Descripción                                           |
+|---------------------------------|-------------------------------------------------------|
+| `SPRING_PROFILES_ACTIVE`        | Entorno de ejecución                                 |
+| `KAFKA_BOOTSTRAP_SERVERS`       | Broker Kafka (`kafka:9092`)                          |
+| `KAFKA_SIMULATOR_API_KEY`       | ApiKey del sensor simulado                           |
+| `KAFKA_SIMULATOR_DELAY_MS`      | Frecuencia de envío de datos                         |
+| `KAFKA_TOPIC`                   | Tópico Kafka a publicar (ej. `iot-sensor-data`)      |
+
+---
+
+## 🚀 ¿Cómo levantar todo?
+
+```bash
+docker compose up --build
+```
+
+Esto levantará:
+
+- PostgreSQL
+- Kafka + Zookeeper
+- Kafka UI (para monitorear tópicos)
+- API REST
+- Simulador TCP
+- Simulador Kafka
+
+Todos conectados a través de la red `iot-net`.
+
+---
+
+## 📮 Pruebas con Postman
+
+Incluimos una colección de pruebas ubicada en:
+
+```
+/postman/IoT Minero - Full System.postman_collection.json
+```
+
+Permite:
+
+- Verificar endpoints REST
+- Iniciar/detener simuladores
+- Probar flujos completos
+- Validar recepción de datos por TCP/Kafka
+
+---
+
+## ✅ Estado Actual
+
+- [x] API REST funcional (sensores, ubicación, empresa, usuarios)
+- [x] Recepción de datos por TCP
+- [x] Recepción de datos desde Kafka
+- [x] Simuladores separados por microservicio
+- [x] Dockerizado completo
+- [x] Pruebas Postman
+- [ ] CI/CD pipeline en Jenkins (en desarrollo)
+- [ ] Despliegue a EC2 (en progreso)
+
+---
+
+## 📌 Tecnologías Usadas
+
+- Java 21 + Spring Boot 3
+- Kafka + Kafka UI
+- PostgreSQL
+- Docker + Docker Compose
+- Postman
+- TCP/IP Socket Programming
+- Multi-threaded Producers
+
+---
+
+## 🧪 Próximos pasos
+
+- [ ] Integrar métricas con Prometheus y Grafana
+- [ ] Validar integración en entorno de staging
+- [ ] Despliegue con CI/CD en AWS EC2
+
+---
+
+## 🧑‍💻 Autores
+
+- Grupo Uno - Ingeniería de Software
