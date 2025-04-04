@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/sensors")
+@RequestMapping("/api/v1/sensors")
 public class SensorController {
 
     private final SensorService sensorService;

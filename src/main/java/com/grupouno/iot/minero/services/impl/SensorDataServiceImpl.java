@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.grupouno.iot.minero.dto.MeasurementDTO;
 import com.grupouno.iot.minero.dto.SensorDataDTO;
 import com.grupouno.iot.minero.mappers.SensorDataMapper;
 import com.grupouno.iot.minero.models.Sensor;
@@ -42,4 +43,10 @@ public class SensorDataServiceImpl implements SensorDataService {
         List<SensorData> dataList = sensorDataRepository.findBySensorId(sensorId);
         return dataList.stream().map(sensorDataMapper::toDTO).toList();
     }
+
+	@Override
+	public void processMeasurement(String api_key, MeasurementDTO measurement) {
+		// TODO Auto-generated method stub
+		
+	}
 }

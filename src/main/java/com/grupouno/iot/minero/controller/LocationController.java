@@ -20,7 +20,7 @@ import com.grupouno.iot.minero.services.CityService;
 import com.grupouno.iot.minero.services.LocationService;
 
 @RestController
-@RequestMapping("/api/locations")
+@RequestMapping("/api/v1/locations")
 public class LocationController {
 
     private final LocationService locationService;

@@ -1,5 +1,7 @@
 package com.grupouno.iot.minero.mappers;
 
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 import com.grupouno.iot.minero.dto.CompanyDTO;
@@ -15,6 +17,12 @@ public class CompanyMapper {
 	        dto.setActive(entity.isActive());
 	        dto.setCreatedAt(entity.getCreatedAt());
 	        dto.setUpdatedAt(entity.getUpdatedAt());
+	        if (entity.getLocations() != null) {
+	            dto.setLocationIds(entity.getLocations().stream()
+	                .map(location -> location.getId())
+	                .collect(Collectors.toList()));
+	        }
+	        
 	        return dto;
 	    }
 
