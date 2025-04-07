@@ -54,8 +54,6 @@ public class CompanyController {
         return ResponseEntity.ok(updatedCompanyDTO);
     }
 
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deleteCompany(@PathVariable Long id) {
         try {

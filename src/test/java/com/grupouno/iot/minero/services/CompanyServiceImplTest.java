@@ -4,12 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.grupouno.iot.minero.dto.CompanyDTO;
+import com.grupouno.iot.minero.exceptions.EntityNotFoundException;
 import com.grupouno.iot.minero.mappers.CompanyMapper;
 import com.grupouno.iot.minero.models.Company;
 import com.grupouno.iot.minero.repository.CompanyRepository;
 import com.grupouno.iot.minero.services.impl.CompanyServiceImpl;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
