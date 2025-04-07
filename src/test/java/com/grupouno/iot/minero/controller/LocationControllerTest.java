@@ -54,7 +54,7 @@ class LocationControllerTest {
     void testGetAllLocations() throws Exception {
         when(locationService.getAllLocations()).thenReturn(Collections.emptyList());
         
-        mockMvc.perform(get("/api/locations"))
+        mockMvc.perform(get("/api/v1/locations"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
     }
@@ -67,7 +67,7 @@ class LocationControllerTest {
         
         when(locationService.getLocationById(1L)).thenReturn(locationDTO);
         
-        mockMvc.perform(get("/api/locations/1"))
+        mockMvc.perform(get("/api/v1/locations/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Test Location"));
@@ -85,7 +85,7 @@ class LocationControllerTest {
         when(cityService.getCityById(1L)).thenReturn(city);
         when(locationService.createLocation(any(LocationDTO.class))).thenReturn(locationDTO);
         
-        mockMvc.perform(post("/api/locations")
+        mockMvc.perform(post("/api/v1/locations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(locationDTO)))
                 .andExpect(status().isOk())
@@ -105,7 +105,7 @@ class LocationControllerTest {
         when(cityService.getCityById(1L)).thenReturn(city);
         when(locationService.updateLocation(eq(1L), any(LocationDTO.class))).thenReturn(locationDTO);
         
-        mockMvc.perform(put("/api/locations/1")
+        mockMvc.perform(put("/api/v1/locations/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(locationDTO)))
                 .andExpect(status().isOk())
@@ -116,7 +116,7 @@ class LocationControllerTest {
     void testDeleteLocation() throws Exception {
         doNothing().when(locationService).deleteLocation(1L);
         
-        mockMvc.perform(delete("/api/locations/1"))
+        mockMvc.perform(delete("/api/v1/locations/1"))
                 .andExpect(status().isOk());
     }
 
@@ -128,7 +128,7 @@ class LocationControllerTest {
         
         when(cityService.getCityById(999L)).thenReturn(null);
         
-        mockMvc.perform(post("/api/locations")
+        mockMvc.perform(post("/api/v1/locations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(locationDTO)))
                 .andExpect(status().isNotFound());

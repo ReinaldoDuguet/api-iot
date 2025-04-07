@@ -1,6 +1,8 @@
 package com.grupouno.iot.minero.services.impl;
 
 import com.grupouno.iot.minero.dto.SensorDTO;
+import com.grupouno.iot.minero.exceptions.ApiKeyAlreadyExistsException;
+import com.grupouno.iot.minero.exceptions.EntityNotFoundException;
 import com.grupouno.iot.minero.mappers.SensorMapper;
 import com.grupouno.iot.minero.models.Location;
 import com.grupouno.iot.minero.models.Sensor;
@@ -43,6 +45,11 @@ public class SensorServiceImpl implements SensorService {
 
 	@Override
 	public SensorDTO create(SensorDTO dto) {
+		
+		if (sensorRepository.existsByApiKey(dto.getApiKey())) {
+            throw new ApiKeyAlreadyExistsException("La api_key ya está en uso.");
+		}
+		
 		Location location = locationRepository.findById(dto.getLocationId()).orElseThrow();
 		SensorCategory category = categoryRepository.findById(dto.getCategoryId()).orElseThrow();
 
@@ -53,25 +60,57 @@ public class SensorServiceImpl implements SensorService {
 
 	@Override
 	public SensorDTO update(Long id, SensorDTO dto) {
-		Sensor existing = sensorRepository.findById(id).orElseThrow();
-		Location location = locationRepository.findById(dto.getLocationId()).orElseThrow();
-		SensorCategory category = categoryRepository.findById(dto.getCategoryId()).orElseThrow();
+	    Sensor existing = sensorRepository.findById(id)
+	        .orElseThrow(() -> new EntityNotFoundException("Sensor not found with id: " + id));
 
-		existing.setName(dto.getName());
-		existing.setApiKey(dto.getApiKey());
-		existing.setMetadata(dto.getMetadata());
-		existing.setActive(dto.isActive());
-		existing.setLocation(location);
-		existing.setCategory(category);
-		existing.setUpdatedAt(dto.getUpdatedAt());
+	    // Validar y actualizar apiKey solo si es distinta y no nula
+	    if (dto.getApiKey() != null && !dto.getApiKey().equals(existing.getApiKey())) {
+	        boolean apiKeyExists = sensorRepository.existsByApiKey(dto.getApiKey());
+	        if (apiKeyExists) {
+	            throw new ApiKeyAlreadyExistsException("The API Key is already in use by another sensor.");
+	        }
+	        existing.setApiKey(dto.getApiKey());
+	    }
 
-		existing = sensorRepository.save(existing);
-		return sensorMapper.toDTO(existing);
+	    if (dto.getName() != null && !dto.getName().equals(existing.getName())) {
+	        existing.setName(dto.getName());
+	    }
+
+	    if (dto.getMetadata() != null && !dto.getMetadata().equals(existing.getMetadata())) {
+	        existing.setMetadata(dto.getMetadata());
+	    }
+
+	    if (dto.getLocationId() != null && 
+	        (existing.getLocation() == null || !dto.getLocationId().equals(existing.getLocation().getId()))) {
+	        Location location = locationRepository.findById(dto.getLocationId())
+	            .orElseThrow(() -> new EntityNotFoundException("Location not found with id: " + dto.getLocationId()));
+	        existing.setLocation(location);
+	    }
+
+	    if (dto.getCategoryId() != null && 
+	        (existing.getCategory() == null || !dto.getCategoryId().equals(existing.getCategory().getId()))) {
+	        SensorCategory category = categoryRepository.findById(dto.getCategoryId())
+	            .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + dto.getCategoryId()));
+	        existing.setCategory(category);
+	    }
+
+	    if (dto.getUpdatedAt() != null && !dto.getUpdatedAt().equals(existing.getUpdatedAt())) {
+	        existing.setUpdatedAt(dto.getUpdatedAt());
+	    }
+
+	    if (dto.isActive() != existing.isActive()) {
+	        existing.setActive(dto.isActive());
+	    }
+
+	    Sensor updatedSensor = sensorRepository.save(existing);
+	    return sensorMapper.toDTO(updatedSensor);
 	}
+
 
 	@Override
 	public void delete(Long id) {
-		Sensor sensor = sensorRepository.findById(id).orElseThrow();
+		Sensor sensor = sensorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Sensor not found"));
 		sensorRepository.delete(sensor);
 	}
 }

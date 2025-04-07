@@ -37,7 +37,7 @@ class SensorMapperTest {
 		sensor.setApiKey("API123");
 
 		Map<String, Object> metadata = new HashMap<>();
-		metadata.put("key", "value");
+		metadata.put("unit", "Celsius");
 		sensor.setMetadata(metadata);
 
 		sensor.setActive(true);
@@ -52,7 +52,7 @@ class SensorMapperTest {
 		assertEquals(3L, dto.getId());
 		assertEquals("Temperature Sensor", dto.getName());
 		assertEquals("API123", dto.getApiKey());
-		assertEquals("{\"unit\": \"Celsius\"}", dto.getMetadata());
+		assertEquals("Celsius", dto.getMetadata().get("unit"));
 		assertTrue(dto.isActive());
 		assertEquals(1L, dto.getLocationId());
 		assertEquals(2L, dto.getCategoryId());
@@ -61,35 +61,34 @@ class SensorMapperTest {
 	}
 
 	@Test
-    void testToEntity() {
-        SensorDTO dto = new SensorDTO();
-        dto.setId(3L);
-        dto.setName("Temperature Sensor");
-        dto.setApiKey("API123");
-        Map<String, Object> metadata = new HashMap<>();
-        metadata.put("key", "value");
-        dto.setMetadata(metadata);
-        dto.setActive(true);
-        dto.setCreatedAt(LocalDateTime.now());
-        dto.setUpdatedAt(LocalDateTime.now());
-        
-        Location location = new Location();
-        location.setId(1L);
-        
-        SensorCategory category = new SensorCategory();
-        category.setId(2L);
-        
-        Sensor sensor = sensorMapper.toEntity(dto, location, category);
-        
-        assertNotNull(sensor);
-        assertEquals(3L, sensor.getId());
-        assertEquals("Temperature Sensor", sensor.getName());
-        assertEquals("API123", sensor.getApiKey());
-        assertEquals("{\"unit\": \"Celsius\"}", sensor.getMetadata());
-        assertTrue(sensor.isActive());
-        assertEquals(1L, sensor.getLocation().getId());
-        assertEquals(2L, sensor.getCategory().getId());
-        assertNotNull(sensor.getCreatedAt());
-        assertNotNull(sensor.getUpdatedAt());
-    }
+	void testToEntity() {
+		SensorDTO dto = new SensorDTO();
+		dto.setId(3L);
+		dto.setName("Temperature Sensor");
+		dto.setApiKey("API123");
+		Map<String, Object> metadata = new HashMap<>();
+		metadata.put("unit", "Celsius");
+		dto.setMetadata(metadata);
+		dto.setActive(true);
+		dto.setCreatedAt(LocalDateTime.now());
+		dto.setUpdatedAt(LocalDateTime.now());
+
+		Location location = new Location();
+		location.setId(1L);
+
+		SensorCategory category = new SensorCategory();
+		category.setId(2L);
+
+		Sensor sensor = sensorMapper.toEntity(dto, location, category);
+
+		assertNotNull(sensor);
+		assertEquals(3L, sensor.getId());
+		assertEquals("Temperature Sensor", sensor.getName());
+		assertEquals("API123", sensor.getApiKey());
+	    assertEquals("Celsius", sensor.getMetadata().get("unit"));		assertTrue(sensor.isActive());
+		assertEquals(1L, sensor.getLocation().getId());
+		assertEquals(2L, sensor.getCategory().getId());
+		assertNotNull(sensor.getCreatedAt());
+		assertNotNull(sensor.getUpdatedAt());
+	}
 }
