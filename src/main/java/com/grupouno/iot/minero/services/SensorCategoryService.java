@@ -8,5 +8,5 @@ public interface SensorCategoryService {
     SensorCategoryDTO findById(Long id);
     SensorCategoryDTO create(SensorCategoryDTO dto);
     SensorCategoryDTO update(Long id, SensorCategoryDTO dto);
-    void delete(Long id);
+    String delete(Long id);
 }

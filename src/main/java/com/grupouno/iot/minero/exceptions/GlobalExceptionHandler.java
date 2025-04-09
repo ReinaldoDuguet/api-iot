@@ -30,4 +30,14 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
+    
+    @ExceptionHandler(EntityAlreadyExistsException.class)
+	public ResponseEntity<Object> handleEntityAlreadyExists(EntityAlreadyExistsException ex) {
+		Map<String, Object> response = Map.of(
+				"message", ex.getMessage(),
+				"status", HttpStatus.UNAUTHORIZED.value()
+		);
+
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
 }

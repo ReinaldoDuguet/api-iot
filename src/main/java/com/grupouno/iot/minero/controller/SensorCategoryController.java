@@ -38,8 +38,8 @@ public class SensorCategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        String mensaje = service.delete(id);
+        return ResponseEntity.ok(mensaje);
     }
 }
