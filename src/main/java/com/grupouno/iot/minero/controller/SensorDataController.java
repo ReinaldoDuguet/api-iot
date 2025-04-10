@@ -18,17 +18,17 @@ import com.grupouno.iot.minero.services.SensorDataService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/sensor-data")
+@RequestMapping("/api/v1/sensor_data")
 @RequiredArgsConstructor
 public class SensorDataController {
 
 	private final SensorDataService sensorDataService;
 
-	@PostMapping
-	public ResponseEntity<String> insertSensorData(@RequestBody SensorDataRequestDTO request) {
-		sensorDataService.saveSensorData(request.getApiKey(), request.getJsonData());
-		return ResponseEntity.status(HttpStatus.CREATED).body("Datos insertados correctamente");
-	}
+    @PostMapping
+    public ResponseEntity<String> insertSensorData(@RequestBody SensorDataRequestDTO request) {
+        sensorDataService.saveSensorData(request.getApiKey(), request.getJsonData());
+        return ResponseEntity.status(HttpStatus.CREATED).body("Datos insertados correctamente");
+    }
 
 	@GetMapping("/{sensorId}")
 	public ResponseEntity<List<SensorDataDTO>> getSensorDataBySensor(@PathVariable Long sensorId) {

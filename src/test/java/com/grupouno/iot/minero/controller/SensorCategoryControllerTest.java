@@ -1,7 +1,6 @@
 package com.grupouno.iot.minero.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -113,13 +112,16 @@ class SensorCategoryControllerTest {
     void testDelete() {
         // Arrange
         Long id = 1L;
-        doNothing().when(service).delete(id);
+        String expectedMessage = "Se ha eliminado el elemento [nombre] con id 1";
+        when(service.delete(id)).thenReturn(expectedMessage);
 
         // Act
-        ResponseEntity<Void> response = controller.delete(id);
+        ResponseEntity<String> response = controller.delete(id);
 
         // Assert
-        assertThat(response.getStatusCode().value()).isEqualTo(204);
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
+        assertThat(response.getBody()).isEqualTo(expectedMessage);
         verify(service, times(1)).delete(id);
     }
+
 }

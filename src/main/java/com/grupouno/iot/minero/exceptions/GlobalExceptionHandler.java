@@ -40,4 +40,14 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 	}
+    
+	@ExceptionHandler(BadRequestException.class)
+	public ResponseEntity<Object> handleBadRequest(BadRequestException ex) {
+		Map<String, Object> response = Map.of(
+				"message", ex.getMessage(),
+				"status", HttpStatus.BAD_REQUEST.value()
+		);
+
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
 }

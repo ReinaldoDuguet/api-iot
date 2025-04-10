@@ -1,13 +1,14 @@
 package com.grupouno.iot.minero.dto;
 
-import lombok.*;
+import java.util.Map;
 
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class MeasurementDTO {
-    private Long datetime;
-    private Double temp;
-    private Double humidity;
+
+	private Long timestamp;
+	private Map<String, Object> values;
 }
