@@ -59,7 +59,7 @@ class SensorDataControllerTest {
         measurement.put("value", 25);
         request.setJsonData(Collections.singletonList(measurement));
 
-        mockMvc.perform(post("/api/v1/sensor-data")
+        mockMvc.perform(post("/api/v1/sensor_data")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -81,7 +81,7 @@ class SensorDataControllerTest {
 
         when(sensorDataService.getSensorDataBySensorId(1L)).thenReturn(Collections.singletonList(dto));
 
-        mockMvc.perform(get("/api/v1/sensor-data/1"))
+        mockMvc.perform(get("/api/v1/sensor_data/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(1)))
                 .andExpect(jsonPath("$[0].id", is(1)))
