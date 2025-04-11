@@ -8,6 +8,6 @@ import com.grupouno.iot.minero.dto.SensorDataDTO;
 
 public interface SensorDataService {
     void saveSensorData(String apiKey, List<Map<String, Object>> jsonData);
-    List<SensorDataDTO> getSensorDataBySensorId(Long sensorId);
 	void processMeasurement(String api_key, MeasurementDTO measurement);
+	List<SensorDataDTO> getSensorData(String companyApiKey, List<Long> sensorIds, Long from, Long to);
 }

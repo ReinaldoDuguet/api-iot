@@ -35,6 +35,7 @@ public class SensorDataMapper {
         dto.setTimestamp(data.getTimestamp());
         dto.setData(data.getData());
         dto.setCreatedAt(data.getCreatedAt());
+        dto.setApiKey(data.getSensor().getApiKey());
         return dto;
     }
 }
