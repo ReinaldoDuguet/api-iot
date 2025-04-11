@@ -3,7 +3,6 @@ package com.grupouno.iot.minero.controller;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,10 +52,11 @@ class SensorDataControllerTest {
     @Test
     void testInsertSensorData() throws Exception {
         SensorDataRequestDTO request = new SensorDataRequestDTO();
-        request.setApiKey("api123");
+        request.setApiKey("sensorApiKey-ABC123");
         Map<String, Object> measurement = new HashMap<>();
-        measurement.put("timestamp", 1625078400000L);
-        measurement.put("value", 25);
+        measurement.put("timestamp", 1712665800);
+        measurement.put("temperature", 24.5);
+        measurement.put("humidity", 40.2);
         request.setJsonData(Collections.singletonList(measurement));
 
         mockMvc.perform(post("/api/v1/sensor_data")
@@ -65,30 +65,42 @@ class SensorDataControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(content().string("Datos insertados correctamente"));
 
-        verify(sensorDataService, times(1)).saveSensorData(eq("api123"), anyList());
+        verify(sensorDataService, 
+            org.mockito.Mockito.times(1)).saveSensorData(eq("sensorApiKey-ABC123"), anyList());
     }
 
     @Test
-    void testGetSensorDataBySensor() throws Exception {
+    void testGetSensorData() throws Exception {
+        // Creamos un SensorDataDTO de ejemplo
         SensorDataDTO dto = new SensorDataDTO();
         dto.setId(1L);
-        dto.setSensorId(1L);
-        dto.setTimestamp(1625078400000L);
+        dto.setSensorId(2L);
+        dto.setTimestamp(1712665800);
         Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("value", 25);
+        dataMap.put("temperature", 24.5);
+        dataMap.put("humidity", 40.2);
         dto.setData(dataMap);
         dto.setCreatedAt(LocalDateTime.now());
 
-        when(sensorDataService.getSensorDataBySensorId(1L)).thenReturn(Collections.singletonList(dto));
+        // Simular que el servicio devuelve una lista con ese DTO
+        when(sensorDataService.getSensorData(eq("comp-12345678"), anyList(), eq(1712665800L), eq(1712665900L)))
+                .thenReturn(Collections.singletonList(dto));
 
-        mockMvc.perform(get("/api/v1/sensor_data/1"))
+        // Realizamos la petición GET (usando sensor_id múltiples veces)
+        mockMvc.perform(get("/api/v1/sensor_data")
+                .param("company_api_key", "comp-12345678")
+                .param("from", "1712665800")
+                .param("to", "1712665900")
+                .param("sensor_id", "2", "3", "4"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(1)))
                 .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].sensorId", is(1)))
-                .andExpect(jsonPath("$[0].timestamp", is(1625078400000L)))
-                .andExpect(jsonPath("$[0].data.value", is(25)));
+                .andExpect(jsonPath("$[0].sensorId", is(2)))
+                .andExpect(jsonPath("$[0].timestamp", is(1712665800)))
+                .andExpect(jsonPath("$[0].data.temperature", is(24.5)))
+                .andExpect(jsonPath("$[0].data.humidity", is(40.2)));
 
-        verify(sensorDataService, times(1)).getSensorDataBySensorId(1L);
+        verify(sensorDataService, org.mockito.Mockito.times(1))
+                .getSensorData(eq("comp-12345678"), anyList(), eq(1712665800L), eq(1712665900L));
     }
 }

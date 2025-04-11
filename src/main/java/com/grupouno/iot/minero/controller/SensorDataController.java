@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grupouno.iot.minero.dto.SensorDataDTO;
@@ -30,9 +30,15 @@ public class SensorDataController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Datos insertados correctamente");
     }
 
-	@GetMapping("/{sensorId}")
-	public ResponseEntity<List<SensorDataDTO>> getSensorDataBySensor(@PathVariable Long sensorId) {
-		List<SensorDataDTO> data = sensorDataService.getSensorDataBySensorId(sensorId);
-		return ResponseEntity.ok(data);
-	}
+    @GetMapping
+    public ResponseEntity<List<SensorDataDTO>> getSensorData(
+        @RequestParam("company_api_key") String companyApiKey,
+        @RequestParam("from") Long from,
+        @RequestParam("to") Long to,
+        @RequestParam("sensor_id") List<Long> sensorIds) {
+
+        List<SensorDataDTO> data = sensorDataService.getSensorData(companyApiKey, sensorIds, from, to);
+        return ResponseEntity.ok(data);
+    }
+
 }
