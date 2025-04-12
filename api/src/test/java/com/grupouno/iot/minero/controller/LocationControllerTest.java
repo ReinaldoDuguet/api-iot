@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Collections;
 
+import com.grupouno.iot.minero.exceptions.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -47,7 +48,9 @@ class LocationControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(locationController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(locationController)
+                .setControllerAdvice(new GlobalExceptionHandler())
+                .build();
     }
 
     @Test
@@ -125,12 +128,16 @@ class LocationControllerTest {
         LocationDTO locationDTO = new LocationDTO();
         locationDTO.setName("Invalid Location");
         locationDTO.setCityId(999L);
-        
-        when(cityService.getCityById(999L)).thenReturn(null);
-        
+
+        when(cityService.getCityById(999L))
+                .thenThrow(new jakarta.persistence.EntityNotFoundException("City not found with id: 999"));
+
         mockMvc.perform(post("/api/v1/locations")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(locationDTO)))
-                .andExpect(status().isNotFound());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(locationDTO)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("City not found with id: 999"))
+                .andExpect(jsonPath("$.status").value(404));
     }
+
 }

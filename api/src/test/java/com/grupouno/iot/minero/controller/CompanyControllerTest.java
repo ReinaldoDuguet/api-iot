@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.List;
 
+import com.grupouno.iot.minero.exceptions.GlobalExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +47,9 @@ class CompanyControllerTest {
 
 	@BeforeEach
 	void setUp() {
-		mockMvc = MockMvcBuilders.standaloneSetup(companyController).build();
+		mockMvc = MockMvcBuilders.standaloneSetup(companyController)
+				.setControllerAdvice(new GlobalExceptionHandler())
+				.build();
 	}
 	
 	@Test
@@ -119,6 +122,8 @@ class CompanyControllerTest {
 
 		mockMvc.perform(delete("/api/v1/companies/1"))
 				.andExpect(status().isNotFound())
-				.andExpect(jsonPath("$.message").value("La compañía con id 1 no fue encontrada."));
+				.andExpect(jsonPath("$.message").value("La compañía con id 1 no fue encontrada."))
+				.andExpect(jsonPath("$.status").value(404));
 	}
+
 }
