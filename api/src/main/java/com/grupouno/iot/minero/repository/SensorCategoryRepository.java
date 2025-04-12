@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface SensorCategoryRepository extends JpaRepository<SensorCategory, Long> {
     Optional<SensorCategory> findByName(String name);
+    boolean existsByName(String name);
+
 }
