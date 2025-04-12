@@ -1,4 +1,4 @@
-package com.grupouno.iot.minero.simulator.dto;
+package com.grupouno.iot.minero.dto;
 
 import lombok.Getter;
 import lombok.Setter;

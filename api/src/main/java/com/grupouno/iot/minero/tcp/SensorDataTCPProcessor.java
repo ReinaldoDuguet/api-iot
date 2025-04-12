@@ -2,7 +2,7 @@ package com.grupouno.iot.minero.tcp;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grupouno.iot.minero.simulator.dto.MeasurementDTO;
+import com.grupouno.iot.minero.dto.MeasurementDTO;
 import com.grupouno.iot.minero.services.SensorDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
