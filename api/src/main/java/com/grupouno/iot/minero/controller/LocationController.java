@@ -2,6 +2,7 @@ package com.grupouno.iot.minero.controller;
 
 import java.util.List;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.apache.kafka.common.errors.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.grupouno.iot.minero.dto.LocationDTO;
-import com.grupouno.iot.minero.exceptions.EntityNotFoundException;
 import com.grupouno.iot.minero.models.City;
 import com.grupouno.iot.minero.services.CityService;
 import com.grupouno.iot.minero.services.LocationService;
