@@ -50,4 +50,12 @@ public class GlobalExceptionHandler {
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+
+	@ExceptionHandler(jakarta.persistence.EntityNotFoundException.class)
+	public ResponseEntity<Object> handleJpaEntityNotFound(jakarta.persistence.EntityNotFoundException ex) {
+		return new ResponseEntity<>(Map.of(
+				"message", ex.getMessage(),
+				"status", HttpStatus.NOT_FOUND.value()
+		), HttpStatus.NOT_FOUND);
+	}
 }
