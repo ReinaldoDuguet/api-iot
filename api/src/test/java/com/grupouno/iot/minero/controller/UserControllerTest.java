@@ -1,8 +1,8 @@
 package com.grupouno.iot.minero.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grupouno.iot.minero.simulator.dto.UserDTO;
-import com.grupouno.iot.minero.simulator.dto.UserUpdateDTO;
+import com.grupouno.iot.minero.dto.UserDTO;
+import com.grupouno.iot.minero.dto.UserUpdateDTO;
 import com.grupouno.iot.minero.models.User;
 import com.grupouno.iot.minero.services.UserService;
 import org.junit.jupiter.api.BeforeEach;

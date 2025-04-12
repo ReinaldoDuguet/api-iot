@@ -1,8 +1,8 @@
 package com.grupouno.iot.minero.controller;
 
-import com.grupouno.iot.minero.simulator.dto.UserDTO;
-import com.grupouno.iot.minero.simulator.dto.UserResponseDTO;
-import com.grupouno.iot.minero.simulator.dto.UserUpdateDTO;
+import com.grupouno.iot.minero.dto.UserDTO;
+import com.grupouno.iot.minero.dto.UserResponseDTO;
+import com.grupouno.iot.minero.dto.UserUpdateDTO;
 import com.grupouno.iot.minero.models.User;
 import com.grupouno.iot.minero.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
