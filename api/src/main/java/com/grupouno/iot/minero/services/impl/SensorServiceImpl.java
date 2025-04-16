@@ -12,8 +12,11 @@ import com.grupouno.iot.minero.repository.SensorCategoryRepository;
 import com.grupouno.iot.minero.repository.SensorRepository;
 import com.grupouno.iot.minero.services.SensorService;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.time.ZoneId; 
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,17 +49,18 @@ public class SensorServiceImpl implements SensorService {
 
 	@Override
 	public SensorDTO create(SensorDTO dto) {
-
-		if (sensorRepository.existsByApiKey(dto.getApiKey())) {
-			throw new ApiKeyAlreadyExistsException("La api_key ya está en uso.");
-		}
-
-		Location location = locationRepository.findById(dto.getLocationId()).orElseThrow();
-		SensorCategory category = categoryRepository.findById(dto.getCategoryId()).orElseThrow();
+		Location location = locationRepository.findById(dto.getLocationId())
+				.orElseThrow(() -> new EntityNotFoundException("Location not found with id: " + dto.getLocationId()));
+		SensorCategory category = categoryRepository.findById(dto.getCategoryId())
+				.orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + dto.getCategoryId()));
 
 		Sensor sensor = sensorMapper.toEntity(dto, location, category);
-		sensor = sensorRepository.save(sensor);
-		return sensorMapper.toDTO(sensor);
+		sensor.setApiKey("sensor_" + UUID.randomUUID());
+		sensor.setCreatedAt(LocalDateTime.now());
+		sensor.setUpdatedAt(LocalDateTime.now());
+
+		Sensor saved = sensorRepository.save(sensor);
+		return sensorMapper.toDTO(saved);
 	}
 
 	@Override
@@ -64,13 +68,8 @@ public class SensorServiceImpl implements SensorService {
 		Sensor existing = sensorRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Sensor not found with id: " + id));
 
-		// Validar y actualizar apiKey solo si es distinta y no nula
 		if (dto.getApiKey() != null && !dto.getApiKey().equals(existing.getApiKey())) {
-			boolean apiKeyExists = sensorRepository.existsByApiKey(dto.getApiKey());
-			if (apiKeyExists) {
-				throw new ApiKeyAlreadyExistsException("The API Key is already in use by another sensor.");
-			}
-			existing.setApiKey(dto.getApiKey());
+			throw new IllegalArgumentException("The sensor_api_key cannot be modified.");
 		}
 
 		if (dto.getName() != null && !dto.getName().equals(existing.getName())) {
@@ -103,8 +102,10 @@ public class SensorServiceImpl implements SensorService {
 			existing.setActive(dto.isActive());
 		}
 
-		Sensor updatedSensor = sensorRepository.save(existing);
-		return sensorMapper.toDTO(updatedSensor);
+		existing.setUpdatedAt(LocalDateTime.now());
+
+		Sensor updated = sensorRepository.save(existing);
+		return sensorMapper.toDTO(updated);
 	}
 
 	@Override

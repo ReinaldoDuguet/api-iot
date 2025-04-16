@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "d5e5b4b1-1321-4dbe-b143-48cba53b4748",
+		"name": "IoT Minero - Full System v2",
+		"description": "Colección completa para API REST principal y simuladores",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "📦 API Principal",
+			"item": [
+				{
+					"name": "👤 Usuarios",
+					"item": [
+						{
+							"name": "🔍 Obtener todos los usuarios",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/users",
+									"host": ["{{host}}"],
+									"port": "{{port_api}}",
+									"path": ["api", "v1", "users"]
+								}
+							}
+						},
+						{
+							"name": "➕ Crear usuario",
+							"request": {
+								"method": "POST",
+								"header": [{
+									"key": "Content-Type",
+									"value": "application/json"
+								}],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"Juan Perez\",\n  \"password\": \"1234\",\n  \"role\": \"ADMIN\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/users",
+									"host": ["{{host}}"],
+									"port": "{{port_api}}",
+									"path": ["api", "v1", "users"]
+								}
+							}
+						},
+						{
+							"name": "🔄 Actualizar usuario",
+							"request": {
+								"method": "PUT",
+								"header": [{
+									"key": "Content-Type",
+									"value": "application/json"
+								}],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"Juan Actualizado\",\n  \"password\": \"5678\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/users/1",
+									"host": ["{{host}}"],
+									"port": "{{port_api}}",
+									"path": ["api", "v1", "users", "1"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "🏢 Empresas",
+					"item": [
+						{
+							"name": "🔍 Obtener todas las empresas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/companies",
+									"host": ["{{host}}"],
+									"port": "{{port_api}}",
+									"path": ["api", "v1", "companies"]
+								}
+							}
+						},
+						{
+							"name": "➕ Crear empresa",
+							"request": {
+								"method": "POST",
+								"header": [{
+									"key": "Content-Type",
+									"value": "application/json"
+								}],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Empresa Minera X\",\n  \"apiKey\": \"12345-ABCDE\",\n  \"isActive\": true,\n  \"locationIds\": [1]\n}"
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/companies",
+									"host": ["{{host}}"],
+									"port": "{{port_api}}",
+									"path": ["api", "v1", "companies"]
+								}
+							}
+						},
+						{
+							"name": "🗑️ Eliminar empresa",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/companies/4",
+									"host": ["{{host}}"],
+									"port": "{{port_api}}",
+									"path": ["api", "v1", "companies", "4"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "📍 Ubicaciones",
+					"item": [
+						{
+							"name": "🌍 Obtener todas las ubicaciones",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/locations",
+									"host": ["{{host}}"],
+									"port": "{{port_api}}",
+									"path": ["api", "v1", "locations"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "📡 Sensores",
+					"item": [
+						{
+							"name": "🔌 Crear sensor",
+							"request": {
+								"method": "POST",
+								"header": [{
+									"key": "Content-Type",
+									"value": "application/json"
+								}],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Sensor ESP32\",\n    \"apiKey\": \"sensor-key-123\",\n    \"metadata\": {\n        \"modelo\": \"ESP32\"\n    },\n    \"locationId\": 1,\n    \"categoryId\": 1,\n    \"active\": true\n}"
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensors",
+									"host": ["{{host}}"],
+									"port": "{{port_api}}",
+									"path": ["api", "v1", "sensors"]
+								}
+							}
+						},
+						{
+							"name": "📊 Obtener datos de sensor",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensor_data?company_api_key=COMP-KEY&from=1712665800&to=1712665900",
+									"host": ["{{host}}"],
+									"port": "{{port_api}}",
+									"path": ["api", "v1", "sensor_data"],
+									"query": [
+										{"key": "company_api_key", "value": "COMP-KEY"},
+										{"key": "from", "value": "1712665800"},
+										{"key": "to", "value": "1712665900"}
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "🛠️ Simuladores",
+			"item": [
+				{
+					"name": "🔌 TCP ESP32",
+					"item": [
+						{
+							"name": "▶️ Iniciar simulador TCP",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_tcp_sim}}/api/v1/simulator/tcp/start",
+									"host": ["{{host}}"],
+									"port": "{{port_tcp_sim}}",
+									"path": ["api", "v1", "simulator", "tcp", "start"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "📡 Kafka Zigbee",
+					"item": [
+						{
+							"name": "⏹ Detener simulador Kafka",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_kafka_sim}}/api/v1/simulator/kafka/stop",
+									"host": ["{{host}}"],
+									"port": "{{port_kafka_sim}}",
+									"path": ["api", "v1", "simulator", "kafka", "stop"]
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost"
+		},
+		{
+			"key": "port_api",
+			"value": "8080"
+		},
+		{
+			"key": "port_tcp_sim",
+			"value": "8082"
+		},
+		{
+			"key": "port_kafka_sim",
+			"value": "8081"
+		}
+	]
+}
