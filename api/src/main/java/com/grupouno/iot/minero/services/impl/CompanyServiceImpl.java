@@ -2,6 +2,7 @@ package com.grupouno.iot.minero.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import com.grupouno.iot.minero.models.Location;
 import com.grupouno.iot.minero.repository.CompanyRepository;
 import com.grupouno.iot.minero.repository.LocationRepository;
 import com.grupouno.iot.minero.services.CompanyService;
+import com.grupouno.iot.minero.exceptions.BadRequestException;
+import org.springframework.http.HttpStatus;
+
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -28,13 +32,16 @@ public class CompanyServiceImpl implements CompanyService {
         this.companyRepository = companyRepository;
     }
 
+    private String generateCompanyApiKey() {
+        return "company_" + UUID.randomUUID().toString().replace("-", "").substring(0, 8);
+    }
+
+    
     @Override
     public CompanyDTO createCompany(CompanyDTO companyDTO) {
-    	
-        if (companyRepository.existsByApiKey(companyDTO.getApiKey())) {
-            throw new ApiKeyAlreadyExistsException("La api_key ya está en uso.");
-        }
         Company company = CompanyMapper.toEntity(companyDTO);
+        
+        company.setApiKey(generateCompanyApiKey());
         company.setCreatedAt(LocalDateTime.now());
         company.setUpdatedAt(LocalDateTime.now());
 
@@ -47,8 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
         return CompanyMapper.toDto(savedCompany);
     }
     
-    
-
+   
     @Override
     public CompanyDTO getCompanyById(Long id) {
         Company company = companyRepository.findById(id)
@@ -65,30 +71,23 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO updateCompany(Long id, CompanyDTO companyDTO) {
-    	// Excepción para id de compañía ya en uso
         Company existingCompany = companyRepository.findById(id)
             .orElseThrow(() -> new EntityNotFoundException("Company not found with id: " + id));
 
-        // Verificar si el ApiKey ya está en uso
         if (companyDTO.getApiKey() != null && !companyDTO.getApiKey().equals(existingCompany.getApiKey())) {
-            boolean apiKeyExists = companyRepository.existsByApiKey(companyDTO.getApiKey());
-            if (apiKeyExists) {
-                throw new ApiKeyAlreadyExistsException("The API Key is already in use by another company.");
-            }
-            existingCompany.setApiKey(companyDTO.getApiKey());
+            throw new BadRequestException("No se permite modificar el API Key de una compañía.");
         }
-        
+
         if (companyDTO.getName() != null && !companyDTO.getName().equals(existingCompany.getName())) {
             existingCompany.setName(companyDTO.getName());
         }
 
-        if (companyDTO.getApiKey() != null && !companyDTO.getApiKey().equals(existingCompany.getApiKey())) {
-            existingCompany.setApiKey(companyDTO.getApiKey());
-        }
+        existingCompany.setUpdatedAt(LocalDateTime.now());
 
         Company updatedCompany = companyRepository.save(existingCompany);
         return CompanyMapper.toDto(updatedCompany);
     }
+
 
     @Override
     public void deleteCompany(Long id) {

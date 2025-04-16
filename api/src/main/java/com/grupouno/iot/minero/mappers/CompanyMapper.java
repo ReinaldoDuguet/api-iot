@@ -30,7 +30,6 @@ public class CompanyMapper {
 	        Company entity = new Company();
 	        entity.setId(dto.getId());
 	        entity.setName(dto.getName());
-	        entity.setApiKey(dto.getApiKey());
 	        entity.setActive(dto.isActive());
 	        entity.setCreatedAt(dto.getCreatedAt());
 	        entity.setUpdatedAt(dto.getUpdatedAt());

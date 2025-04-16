@@ -16,24 +16,28 @@ public class SensorMapper {
         dto.setApiKey(sensor.getApiKey());
         dto.setMetadata(sensor.getMetadata());
         dto.setActive(sensor.isActive());
-        dto.setLocationId(sensor.getLocation().getId());
-        dto.setCategoryId(sensor.getCategory().getId());
         dto.setCreatedAt(sensor.getCreatedAt());
         dto.setUpdatedAt(sensor.getUpdatedAt());
+
+        if (sensor.getLocation() != null) {
+            dto.setLocationId(sensor.getLocation().getId());
+        }
+
+        if (sensor.getCategory() != null) {
+            dto.setCategoryId(sensor.getCategory().getId());
+        }
+
         return dto;
     }
 
     public Sensor toEntity(SensorDTO dto, Location location, SensorCategory category) {
         Sensor sensor = new Sensor();
-        sensor.setId(dto.getId());
         sensor.setName(dto.getName());
-        sensor.setApiKey(dto.getApiKey());
         sensor.setMetadata(dto.getMetadata());
         sensor.setActive(dto.isActive());
         sensor.setLocation(location);
         sensor.setCategory(category);
-        sensor.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : sensor.getCreatedAt());
-        sensor.setUpdatedAt(dto.getUpdatedAt() != null ? dto.getUpdatedAt() : sensor.getUpdatedAt());
         return sensor;
     }
 }
+
