@@ -113,9 +113,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/companies",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "companies"]
                 }
               },
@@ -142,9 +142,9 @@
                 },
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/companies/2",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "companies", "2"]
                 }
               },
@@ -157,9 +157,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/companies/1",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "companies", "1"]
                 }
               },
@@ -172,9 +172,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/companies/4",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "companies", "4"]
                 }
               },
@@ -201,9 +201,9 @@
                 },
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/companies",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "companies"]
                 }
               },
@@ -221,9 +221,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/locations",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "locations"]
                 }
               },
@@ -236,9 +236,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/locations/1",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "locations", "1"]
                 }
               },
@@ -251,9 +251,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/locations/1",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "locations", "1"]
                 }
               },
@@ -266,9 +266,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/locations/1",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "locations", "1"]
                 }
               },
@@ -281,9 +281,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/locations/1",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "locations", "1"]
                 }
               },
@@ -301,9 +301,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensors",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensors"]
                 }
               },
@@ -325,9 +325,9 @@
                 },
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensors",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensors"]
                 }
               },
@@ -349,9 +349,9 @@
                 },
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensors/4",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensors", "4"]
                 }
               },
@@ -364,9 +364,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensors/65",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensors", "65"]
                 }
               },
@@ -379,9 +379,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensors/3",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensors", "3"]
                 }
               },
@@ -399,9 +399,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensor-categories",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensor-categories"]
                 }
               },
@@ -414,9 +414,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensor-categories/2",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensor-categories", "2"]
                 }
               },
@@ -443,9 +443,9 @@
                 },
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensor-categories",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensor-categories"]
                 }
               },
@@ -467,9 +467,9 @@
                 },
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensor-categories/7",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensor-categories", "7"]
                 }
               },
@@ -482,9 +482,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensor-categories/7",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensor-categories", "7"]
                 }
               },
@@ -502,9 +502,9 @@
                 "header": [],
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensor_data?company_api_key=comp-12345678&from=1712665800&to=1712665900&sensor_id=2&sensor_id=3&sensor_id=4",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensor_data"],
                   "query": [
                     {
@@ -552,9 +552,9 @@
                 },
                 "url": {
                   "raw": "{{host}}:{{port_api}}/api/v1/sensor_data",
-                  "protocol": "http",
-                  "host": ["localhost"],
-                  "port": "8081",
+
+                  "host": ["{{host}}"],
+                  "port": "{{port_api}}",
                   "path": ["api", "v1", "sensor_data"]
                 }
               },
@@ -706,4 +706,3 @@
     }
   ]
 }
-
