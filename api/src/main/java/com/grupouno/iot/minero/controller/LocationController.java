@@ -52,7 +52,7 @@ public class LocationController {
                 throw new EntityNotFoundException("City not found with id: " + locationDTO.getCityId());
             }
         } else {
-            throw new InvalidRequestException("City ID is required for creating location.");
+            throw new com.grupouno.iot.minero.exceptions.InvalidRequestException("City ID is required for creating location.");
         }
 
         return locationService.createLocation(locationDTO);

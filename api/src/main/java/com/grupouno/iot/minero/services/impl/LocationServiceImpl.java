@@ -21,68 +21,68 @@ import java.util.stream.Collectors;
 @Service
 public class LocationServiceImpl implements LocationService {
 
-    private final LocationRepository locationRepository;
-    private final CompanyRepository companyRepository;
-    private final CityRepository cityRepository;
+        private final LocationRepository locationRepository;
+        private final CompanyRepository companyRepository;
+        private final CityRepository cityRepository;
 
-    @Autowired
-    public LocationServiceImpl(LocationRepository locationRepository,
-                               CompanyRepository companyRepository,
-                               CityRepository cityRepository) {
-        this.locationRepository = locationRepository;
-        this.companyRepository = companyRepository;
-        this.cityRepository = cityRepository;
-    }
+        @Autowired
+        public LocationServiceImpl(LocationRepository locationRepository,
+                        CompanyRepository companyRepository,
+                        CityRepository cityRepository) {
+                this.locationRepository = locationRepository;
+                this.companyRepository = companyRepository;
+                this.cityRepository = cityRepository;
+        }
 
-    @Override
-    public List<LocationDTO> getAllLocations() {
-        return locationRepository.findAll().stream()
-                .map(LocationMapper::toDto)
-                .collect(Collectors.toList());
-    }
+        @Override
+        public List<LocationDTO> getAllLocations() {
+                return locationRepository.findAll().stream()
+                                .map(LocationMapper::toDto)
+                                .collect(Collectors.toList());
+        }
 
-    @Override
-    public LocationDTO getLocationById(Long id) {
-        Location location = locationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
-        return LocationMapper.toDto(location);
-    }
+        @Override
+        public LocationDTO getLocationById(Long id) {
+                Location location = locationRepository.findById(id)
+                                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+                return LocationMapper.toDto(location);
+        }
 
-    @Override
-    public LocationDTO createLocation(LocationDTO dto) {
-        Company company = companyRepository.findById(dto.getCompanyId())
-                .orElseThrow(() -> new EntityNotFoundException("Company not found"));
-        City city = cityRepository.findById(dto.getCityId())
-                .orElseThrow(() -> new EntityNotFoundException("City not found"));
-        Location location = LocationMapper.toEntity(dto, company, city);
-        location = locationRepository.save(location);
-        return LocationMapper.toDto(location);
-    }
+        @Override
+        public LocationDTO createLocation(LocationDTO dto) {
+                Company company = companyRepository.findById(dto.getCompanyId())
+                                .orElseThrow(() -> new EntityNotFoundException("Company not found"));
+                City city = cityRepository.findById(dto.getCityId())
+                                .orElseThrow(() -> new EntityNotFoundException("City not found"));
+                Location location = LocationMapper.toEntity(dto, company, city);
+                location = locationRepository.save(location);
+                return LocationMapper.toDto(location);
+        }
 
-    @Override
-    public LocationDTO updateLocation(Long id, LocationDTO dto) {
-        Location location = locationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+        @Override
+        public LocationDTO updateLocation(Long id, LocationDTO dto) {
+                Location location = locationRepository.findById(id)
+                                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
 
-        Company company = companyRepository.findById(dto.getCompanyId())
-                .orElseThrow(() -> new EntityNotFoundException("Company not found"));
-        City city = cityRepository.findById(dto.getCityId())
-                .orElseThrow(() -> new EntityNotFoundException("City not found"));
+                Company company = companyRepository.findById(dto.getCompanyId())
+                                .orElseThrow(() -> new EntityNotFoundException("Company not found"));
+                City city = cityRepository.findById(dto.getCityId())
+                                .orElseThrow(() -> new EntityNotFoundException("City not found"));
 
-        location.setName(dto.getName());
-        location.setMetadata(dto.getMetadata());
-        location.setCompany(company);
-        location.setCity(city);
-        location.setUpdatedAt(LocalDateTime.now());
+                location.setName(dto.getName());
+                location.setMetadata(dto.getMetadata());
+                location.setCompany(company);
+                location.setCity(city);
+                location.setUpdatedAt(LocalDateTime.now());
 
-        location = locationRepository.save(location);
-        return LocationMapper.toDto(location);
-    }
+                location = locationRepository.save(location);
+                return LocationMapper.toDto(location);
+        }
 
-    @Override
-    public void deleteLocation(Long id) {
-        Location location = locationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
-        locationRepository.delete(location);
-    }
+        @Override
+        public void deleteLocation(Long id) {
+                Location location = locationRepository.findById(id)
+                                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+                locationRepository.delete(location);
+        }
 }
