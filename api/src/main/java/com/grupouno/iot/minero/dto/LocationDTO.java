@@ -1,6 +1,7 @@
 package com.grupouno.iot.minero.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
@@ -16,10 +17,12 @@ public class LocationDTO {
     private Long cityId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
+    private List<Long> sensorIds;
+    
     public LocationDTO() {}
 
-    public LocationDTO(Long id, String name, Map<String, Object> metadata, Long companyId, Long cityId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public LocationDTO(Long id, String name, Map<String, Object> metadata, Long companyId, Long cityId,
+                       LocalDateTime createdAt, LocalDateTime updatedAt, List<Long> sensorIds) {
         this.id = id;
         this.name = name;
         this.metadata = metadata;
@@ -27,5 +30,6 @@ public class LocationDTO {
         this.cityId = cityId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.sensorIds = sensorIds;
     }
 }

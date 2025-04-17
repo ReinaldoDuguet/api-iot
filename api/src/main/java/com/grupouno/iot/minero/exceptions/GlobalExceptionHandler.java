@@ -53,21 +53,4 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(jakarta.persistence.EntityNotFoundException.class)
-	public ResponseEntity<Object> handleJpaEntityNotFound(jakarta.persistence.EntityNotFoundException ex) {
-		return new ResponseEntity<>(Map.of(
-				"message", ex.getMessage(),
-				"status", HttpStatus.NOT_FOUND.value()
-		), HttpStatus.NOT_FOUND);
-	}
-
-    @ExceptionHandler(InvalidRequestException.class)
-    public ResponseEntity<Object> handleInvalidRequest(InvalidRequestException ex) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
-        body.put("error", "Bad Request");
-        body.put("message", ex.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-    }
 }

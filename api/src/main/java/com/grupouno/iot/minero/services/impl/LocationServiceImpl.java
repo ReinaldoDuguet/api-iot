@@ -50,34 +50,49 @@ public class LocationServiceImpl implements LocationService {
 
         @Override
         public LocationDTO createLocation(LocationDTO dto) {
-                Company company = companyRepository.findById(dto.getCompanyId())
-                                .orElseThrow(() -> new EntityNotFoundException("Company not found"));
-                City city = cityRepository.findById(dto.getCityId())
-                                .orElseThrow(() -> new EntityNotFoundException("City not found"));
-                Location location = LocationMapper.toEntity(dto, company, city);
-                location = locationRepository.save(location);
-                return LocationMapper.toDto(location);
+            Company company = companyRepository.findById(dto.getCompanyId())
+                .orElseThrow(() -> new EntityNotFoundException("Company not found with id: " + dto.getCompanyId()));
+
+            City city = cityRepository.findById(dto.getCityId())
+                .orElseThrow(() -> new EntityNotFoundException("City not found with id: " + dto.getCityId()));
+
+            Location location = LocationMapper.toEntity(dto, company, city);
+            location = locationRepository.save(location);
+            return LocationMapper.toDto(location);
         }
+
 
         @Override
         public LocationDTO updateLocation(Long id, LocationDTO dto) {
-                Location location = locationRepository.findById(id)
-                                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+            Location location = locationRepository.findById(id)
+                    .orElseThrow(() -> new com.grupouno.iot.minero.exceptions.EntityNotFoundException("Location not found with id: " + id));
 
-                Company company = companyRepository.findById(dto.getCompanyId())
-                                .orElseThrow(() -> new EntityNotFoundException("Company not found"));
-                City city = cityRepository.findById(dto.getCityId())
-                                .orElseThrow(() -> new EntityNotFoundException("City not found"));
-
+            if (dto.getName() != null) {
                 location.setName(dto.getName());
-                location.setMetadata(dto.getMetadata());
-                location.setCompany(company);
-                location.setCity(city);
-                location.setUpdatedAt(LocalDateTime.now());
+            }
 
-                location = locationRepository.save(location);
-                return LocationMapper.toDto(location);
+            if (dto.getMetadata() != null) {
+                location.setMetadata(dto.getMetadata());
+            }
+
+            if (dto.getCompanyId() != null) {
+                Company company = companyRepository.findById(dto.getCompanyId())
+                        .orElseThrow(() -> new com.grupouno.iot.minero.exceptions.EntityNotFoundException("Company not found with id: " + dto.getCompanyId()));
+                location.setCompany(company);
+            }
+
+            if (dto.getCityId() != null) {
+                City city = cityRepository.findById(dto.getCityId())
+                        .orElseThrow(() -> new com.grupouno.iot.minero.exceptions.EntityNotFoundException("City not found with id: " + dto.getCityId()));
+                location.setCity(city);
+            }
+
+            location.setUpdatedAt(LocalDateTime.now());
+            location = locationRepository.save(location);
+
+            return LocationMapper.toDto(location);
         }
+
 
         @Override
         public void deleteLocation(Long id) {

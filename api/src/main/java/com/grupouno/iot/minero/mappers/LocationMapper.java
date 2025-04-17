@@ -1,11 +1,13 @@
 package com.grupouno.iot.minero.mappers;
 
-import org.springframework.stereotype.Component;
-
 import com.grupouno.iot.minero.dto.LocationDTO;
 import com.grupouno.iot.minero.models.City;
 import com.grupouno.iot.minero.models.Company;
 import com.grupouno.iot.minero.models.Location;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class LocationMapper {
@@ -19,6 +21,15 @@ public class LocationMapper {
         dto.setCityId(location.getCity().getId());
         dto.setCreatedAt(location.getCreatedAt());
         dto.setUpdatedAt(location.getUpdatedAt());
+
+        if (location.getSensors() != null) {
+            List<Long> sensorIds = location.getSensors()
+                    .stream()
+                    .map(sensor -> sensor.getId())
+                    .collect(Collectors.toList());
+            dto.setSensorIds(sensorIds);
+        }
+
         return dto;
     }
 

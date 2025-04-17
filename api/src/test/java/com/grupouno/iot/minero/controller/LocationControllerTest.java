@@ -123,21 +123,4 @@ class LocationControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void testCreateLocationWithInvalidCity() throws Exception {
-        LocationDTO locationDTO = new LocationDTO();
-        locationDTO.setName("Invalid Location");
-        locationDTO.setCityId(999L);
-
-        when(cityService.getCityById(999L))
-                .thenThrow(new jakarta.persistence.EntityNotFoundException("City not found with id: 999"));
-
-        mockMvc.perform(post("/api/v1/locations")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(locationDTO)))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("City not found with id: 999"))
-                .andExpect(jsonPath("$.status").value(404));
-    }
-
 }

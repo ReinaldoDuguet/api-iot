@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.grupouno.iot.minero.dto.LocationDTO;
 import com.grupouno.iot.minero.models.City;
 import com.grupouno.iot.minero.services.CityService;
@@ -44,31 +45,11 @@ public class LocationController {
     
     @PostMapping
     public LocationDTO createLocation(@RequestBody LocationDTO locationDTO) {
-        if (locationDTO.getCityId() != null) {
-            City city = cityService.getCityById(locationDTO.getCityId());
-            if (city != null) {
-                locationDTO.setCityId(city.getId());
-            } else {
-                throw new EntityNotFoundException("City not found with id: " + locationDTO.getCityId());
-            }
-        } else {
-            throw new com.grupouno.iot.minero.exceptions.InvalidRequestException("City ID is required for creating location.");
-        }
-
         return locationService.createLocation(locationDTO);
     }
 
     @PutMapping("/{id}")
     public LocationDTO updateLocation(@PathVariable Long id, @RequestBody LocationDTO locationDTO) {
-        if (locationDTO.getCityId() != null) {
-            City city = cityService.getCityById(locationDTO.getCityId());
-            if (city != null) {
-                locationDTO.setCityId(city.getId());
-            } else {
-                throw new EntityNotFoundException("City not found with id: " + locationDTO.getCityId());
-            }
-        }
-
         return locationService.updateLocation(id, locationDTO);
     }
 
