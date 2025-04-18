@@ -43,7 +43,7 @@ public class Esp32Simulator implements Runnable {
 
             while (running) {
                 if (paused) {
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                     continue;
                 }
 
