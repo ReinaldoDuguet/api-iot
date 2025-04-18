@@ -36,7 +36,11 @@ build/
 .gcp/
 
 ### ignorar archivos terraform #####
-infra/terraform/
-*.exe
-*.tfstate*
+# Terraform - solo ignorar lo generado automáticamente
+infra/terraform/.terraform/
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/*.lock.hcl
+infra/terraform/*_v*.exe
+
 
