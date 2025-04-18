@@ -3,7 +3,7 @@ package com.grupouno.iot.minero.tcp;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grupouno.iot.minero.dto.MeasurementDTO;
-import com.grupouno.iot.minero.services.SensorDataService;
+import com.grupouno.iot.minero.services.SensorDataServiceListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -13,10 +13,10 @@ public class SensorDataTCPProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SensorDataTCPProcessor.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final SensorDataService sensorDataService;
+    private final SensorDataServiceListener sensorDataServiceListener;
 
-    public SensorDataTCPProcessor(SensorDataService sensorDataService) {
-        this.sensorDataService = sensorDataService;
+    public SensorDataTCPProcessor(SensorDataServiceListener sensorDataServiceListener) {
+        this.sensorDataServiceListener = sensorDataServiceListener;
     }
 
     public void processJson(String jsonMessage) {
@@ -45,7 +45,7 @@ public class SensorDataTCPProcessor {
                 dto.setTemp(temp);
                 dto.setHumidity(humidity);
 
-                sensorDataService.processMeasurement(apiKey, dto);
+                sensorDataServiceListener.processMeasurement(apiKey, dto);
             }
 
             log.info("✅ Processed TCP message from API key: {}", apiKey);
