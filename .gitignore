@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+*.json
+.gcp/
+
+### ignorar archivos terraform #####
+# Terraform - solo ignorar lo generado automáticamente
+infra/terraform/.terraform/
+infra/terraform/*.tfstate
+infra/terraform/*.tfstate.*
+infra/terraform/*.lock.hcl
+infra/terraform/*_v*.exe
+
+

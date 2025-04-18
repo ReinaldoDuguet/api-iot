@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_iot
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: db_iot
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - iot-net
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: api-iot
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: postgres
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+      KAFKA_HOST: 186.64.120.248
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - iot-net
+
+volumes:
+  pgdata:
+
+networks:
+  iot-net:
+    driver: bridge

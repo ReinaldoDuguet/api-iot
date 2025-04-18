@@ -1,0 +1,945 @@
+{
+	"info": {
+		"_postman_id": "9e4c4400-825d-41dc-ae73-1bfb307069b8",
+		"name": "IoT Minero - Scaled Full System",
+		"description": "Test de endpoints para API REST, Simulador TCP ESP32, Simulador Kafka Zigbee y nuevos endpoints de Companies, Locations, Sensors, Sensor Categories y Sensor Data.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29104321"
+	},
+	"item": [
+		{
+			"name": "📦 API Principal",
+			"item": [
+				{
+					"name": "👥 Users",
+					"item": [
+						{
+							"name": "🔍 Get All Users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/users",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "👤 Get User by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/users/1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "➕ Create User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"Juan Perez\",\n  \"password\": \"1234\",\n  \"role\": \"ADMIN\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/users",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "✏️ Update User",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"Juan Actualizado\",\n  \"password\": \"5678\"\n}"
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/users/1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "🗑️ Delete User",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/users/1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "🏢 Companies",
+					"item": [
+						{
+							"name": "🔍 Get all Companies",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/companies",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"companies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "✏️ Update Company",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Empresa Minera XYZ\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/companies/2",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"companies",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "🏢 Get Company",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/companies/1",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"companies",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "🗑️ Delete Company",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/companies/4",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"companies",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "➕ Create Company",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Empresa Minera X\",\n  \"apiKey\": \"12345-ABCDE\",\n  \"isActive\": true,\n  \"locationIds\": [1]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/companies",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"companies"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "📍 Locations",
+					"item": [
+						{
+							"name": "🔍 Get all Locations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/locations",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"locations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "📍 Get Location",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/locations/2",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"locations",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "➕ Create Location",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Planta test 2\",\n    \"metadata\": {\n        \"area\": \"test\"\n    },\n    \"companyId\": 1,\n    \"cityId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/locations",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"locations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "✏️ Update Location",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"companyId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/locations/2",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"locations",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "🗑️ Delete Location",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/locations/2",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"locations",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "🔧 Sensors",
+					"item": [
+						{
+							"name": "🔍 Get All Sensors",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensors",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "➕ Create Sensor",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Sensor esp32 tcp test 2\",\n    \"apiKey\": \"sensor-esp32-tcp-key-519494H1494948Z\",\n    \"metadata\": {\n        \"modelo\": \"ESP32\"\n    },\n    \"locationId\": 2,\n    \"categoryId\": 1,\n    \"active\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensors",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensors"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "✏️ Update Sensor",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"apiKey\": \"sensor-esp32-tcp-key-519494H1494948Z\",\n    \"metadata\": {\n        \"modelo\": \"ESP32\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensors/4",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensors",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "🔧 Get Sensor",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensors/65",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensors",
+										"65"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "🗑️ Delete Sensor",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensors/3",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensors",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "🏷️ Sensors Categories",
+					"item": [
+						{
+							"name": "🔍 Get all Sensors categories",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensor-categories",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensor-categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "🏷️ Get Sensor Category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensor-categories/2",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensor-categories",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "➕ Create Sensor Category",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"para borrar\",\n  \"description\": \"Borrame\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensor-categories",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensor-categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "✏️ Update Sensor Category",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"para no borrar\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensor-categories/7",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensor-categories",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "🗑️ Delete Sensor Category",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensor-categories/7",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensor-categories",
+										"7"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "📊 Sensors Data",
+					"item": [
+						{
+							"name": "🔍 Get Sensor Data",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensor_data?company_api_key=comp-12345678&from=1712665800&to=1712665900&sensor_id=2&sensor_id=3&sensor_id=4",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensor_data"
+									],
+									"query": [
+										{
+											"key": "company_api_key",
+											"value": "comp-12345678"
+										},
+										{
+											"key": "from",
+											"value": "1712665800"
+										},
+										{
+											"key": "to",
+											"value": "1712665900"
+										},
+										{
+											"key": "sensor_id",
+											"value": "2"
+										},
+										{
+											"key": "sensor_id",
+											"value": "3"
+										},
+										{
+											"key": "sensor_id",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "➕ Insert Sensor Data",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"apiKey\": \"sensor-esp32-tcp-key-519494H1494948Z\",\n  \"jsonData\": [\n    {\n      \"timestamp\": 1712665800,\n      \"temperature\": 24.5,\n      \"humidity\": 40.2\n    },\n    {\n      \"timestamp\": 1712665860,\n      \"temperature\": 24.7,\n      \"humidity\": 40.0\n    }\n  ]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}:{{port_api}}/api/v1/sensor_data",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port_api}}",
+									"path": [
+										"api",
+										"v1",
+										"sensor_data"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "📡 TCP ESP32 Simulator",
+			"item": [
+				{
+					"name": "▶️ Start TCP Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port_tcp_sim}}/api/v1/simulator/tcp/start",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port_tcp_sim}}",
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"tcp",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "⏸ Pause TCP Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port_tcp_sim}}/api/v1/simulator/tcp/pause",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port_tcp_sim}}",
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"tcp",
+								"pause"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "▶ Resume TCP Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port_tcp_sim}}/api/v1/simulator/tcp/resume",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port_tcp_sim}}",
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"tcp",
+								"resume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "⏹ Stop TCP Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port_tcp_sim}}/api/v1/simulator/tcp/stop",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port_tcp_sim}}",
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"tcp",
+								"stop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "🔍 Status TCP Simulator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port_tcp_sim}}/api/v1/simulator/tcp/status",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port_tcp_sim}}",
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"tcp",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "📡 Kafka Zigbee Simulator",
+			"item": [
+				{
+					"name": "▶️ Start Kafka Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port_kafka_sim}}/api/v1/simulator/kafka/start",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port_kafka_sim}}",
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"kafka",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "⏹ Stop Kafka Simulator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port_kafka_sim}}/api/v1/simulator/kafka/stop",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port_kafka_sim}}",
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"kafka",
+								"stop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "🔍 Status Kafka Simulator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port_kafka_sim}}/api/v1/simulator/kafka/status",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port_kafka_sim}}",
+							"path": [
+								"api",
+								"v1",
+								"simulator",
+								"kafka",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost"
+		},
+		{
+			"key": "port_api",
+			"value": "8080"
+		},
+		{
+			"key": "port_tcp_sim",
+			"value": "8082"
+		},
+		{
+			"key": "port_kafka_sim",
+			"value": "8081"
+		}
+	]
+}

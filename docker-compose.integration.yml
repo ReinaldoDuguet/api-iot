@@ -1,0 +1,155 @@
+services:
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: postgres_iot
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: db_iot
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - iot-net
+
+  # Zookeeper para coordinar nodos Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: zookeeper
+    restart: unless-stopped
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - iot-net
+
+  # Kafka Broker
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    hostname: kafka
+    container_name: kafka
+    restart: unless-stopped
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT_HOST:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_HOST
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - iot-net
+
+  # Interfaz web para monitorear Kafka
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    ports:
+      - "8085:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafka-local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    networks:
+      - iot-net
+
+  # API Spring Boot
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: api-iot
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: integration
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_iot
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    networks:
+      - iot-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Simulador TCP/IP (ESP32)
+  tcp-simulator:
+    build:
+      context: ./simulators/tcp-simulator
+      dockerfile: Dockerfile
+    container_name: tcp-simulator
+    restart: unless-stopped
+    # Descomenta si necesitas exponer endpoints externos desde el simulador
+    ports:
+      - "8082:8082"
+    depends_on:
+      - api
+    environment:
+      SPRING_PROFILES_ACTIVE: integration
+      ESP32_SIMULATOR_API_KEY: sensor-esp32-tcp-key-519494H1494948T
+      ESP32_SIMULATOR_PORT: 6000
+      ESP32_SIMULATOR_HOST: api
+      ESP32_SIMULATOR_INTERVAL_MILLIS: 2500
+      #ESP32_SIMULATOR_TCP_ENABLE: true
+    networks:
+      - iot-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Simulador Kafka (Zigbee)
+  kafka-simulator:
+    build:
+      context: ./simulators/kafka-simulator
+      dockerfile: Dockerfile
+    container_name: kafka-simulator
+    restart: unless-stopped
+    # Descomenta si necesitas exponer endpoints externos desde el simulador
+    ports:
+      - "8084:8084"
+    depends_on:
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: integration
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_SIMULATOR_API_KEY: sensor-zigbee-mqtt-key-15464813J57L
+      KAFKA_SIMULATOR_DELAY_MS: 1000
+      KAFKA_TOPIC: iot-sensor-data
+    networks:
+      - iot-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+# Volumen persistente para PostgreSQL
+volumes:
+  pgdata:
+
+# Red compartida entre todos los servicios
+networks:
+  iot-net:
+    driver: bridge

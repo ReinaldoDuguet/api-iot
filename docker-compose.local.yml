@@ -1,0 +1,27 @@
+services:
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    restart: unless-stopped
+    ports:
+      - "8085:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafka-external
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 186.64.120.248:9092
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_iot
+    restart: always
+    environment:
+      POSTGRES_DB: db_iot
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
