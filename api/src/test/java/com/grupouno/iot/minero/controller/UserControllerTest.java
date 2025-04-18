@@ -1,8 +1,7 @@
 package com.grupouno.iot.minero.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grupouno.iot.minero.dto.UserDTO;
-import com.grupouno.iot.minero.dto.UserUpdateDTO;
+import com.grupouno.iot.minero.dto.UserCreateRequest;
 import com.grupouno.iot.minero.models.User;
 import com.grupouno.iot.minero.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -42,10 +42,16 @@ class UserControllerTest {
 
     @Test
     void testGetAllUsers() throws Exception {
-        User user1 = new User("user1", "hashed_password", List.of());
+        User user1 = new User();
         user1.setId(1L);
-        User user2 = new User("user2", "hashed_password", List.of());
+        user1.setUsername("user1");
+        user1.setPasswordHash("hashed_password");
+        
+        User user2 = new User();
         user2.setId(2L);
+        user2.setUsername("user2");
+        user2.setPasswordHash("hashed_password");
+        
         List<User> users = Arrays.asList(user1, user2);
         when(userService.getAllUsers()).thenReturn(users);
 
@@ -58,8 +64,11 @@ class UserControllerTest {
 
     @Test
     void testGetUserById_UserFound() throws Exception {
-        User user = new User("user1", "hashed_password", List.of());
+        User user = new User();
         user.setId(1L);
+        user.setUsername("user1");
+        user.setPasswordHash("hashed_password");
+        
         when(userService.getUserById(1L)).thenReturn(Optional.of(user));
 
         mockMvc.perform(get("/api/v1/users/1"))
@@ -79,60 +88,64 @@ class UserControllerTest {
 
     @Test
     void testCreateUser() throws Exception {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUsername("new_user");
-        userDTO.setPassword("password");
-        userDTO.setRole("USER");
+        UserCreateRequest userRequest = new UserCreateRequest();
+        userRequest.setUsername("new_user");
+        userRequest.setPassword("password");
+        userRequest.setEnabled(true);
+        userRequest.setBlocked(false);
+        userRequest.setCredentialsExpired(false);
 
-        User createdUser = new User("new_user", "hashed_password", List.of());
+        User createdUser = new User();
         createdUser.setId(1L);
+        createdUser.setUsername("new_user");
+        createdUser.setPasswordHash("hashed_password");
 
-        when(userService.createUser(any(UserDTO.class))).thenReturn(createdUser);
+        when(userService.createUser(any(UserCreateRequest.class))).thenReturn(createdUser);
 
         mockMvc.perform(post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userDTO)))
+                        .content(objectMapper.writeValueAsString(userRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("new_user"));
 
-        verify(userService, times(1)).createUser(any(UserDTO.class));
+        verify(userService, times(1)).createUser(any(UserCreateRequest.class));
     }
 
     @Test
     void testUpdateUser_UserFound() throws Exception {
-        UserUpdateDTO updateDTO = new UserUpdateDTO();
-        updateDTO.setUsername("updated_user");
-        updateDTO.setPassword("new_password");
+        User userUpdate = new User();
+        userUpdate.setUsername("updated_user");
+        userUpdate.setPasswordHash("new_hashed_password");
 
-        User updatedUser = new User("updated_user", "hashed_password", List.of());
+        User updatedUser = new User();
         updatedUser.setId(1L);
+        updatedUser.setUsername("updated_user");
+        updatedUser.setPasswordHash("new_hashed_password");
 
-        when(userService.updateUser(eq(1L), any(UserUpdateDTO.class))).thenReturn(updatedUser);
+        when(userService.updateUser(eq(1L), any(User.class))).thenReturn(updatedUser);
 
-        String json = objectMapper.writeValueAsString(updateDTO);
         mockMvc.perform(put("/api/v1/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                        .content(objectMapper.writeValueAsString(userUpdate)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("updated_user"));
-        verify(userService, times(1)).updateUser(eq(1L), any(UserUpdateDTO.class));
+        verify(userService, times(1)).updateUser(eq(1L), any(User.class));
     }
 
     @Test
     void testUpdateUser_UserNotFound() throws Exception {
-        UserUpdateDTO updateDTO = new UserUpdateDTO();
-        updateDTO.setUsername("user");
-        updateDTO.setPassword("pass");
+        User userUpdate = new User();
+        userUpdate.setUsername("user");
+        userUpdate.setPasswordHash("pass");
 
-        when(userService.updateUser(eq(1L), any(UserUpdateDTO.class)))
-                .thenThrow(new RuntimeException("Usuario no encontrado con ID: 1"));
+        when(userService.updateUser(eq(1L), any(User.class)))
+                .thenThrow(new RuntimeException("User not found with id: 1"));
 
-        String json = objectMapper.writeValueAsString(updateDTO);
         mockMvc.perform(put("/api/v1/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
+                        .content(objectMapper.writeValueAsString(userUpdate)))
                 .andExpect(status().isNotFound());
-        verify(userService, times(1)).updateUser(eq(1L), any(UserUpdateDTO.class));
+        verify(userService, times(1)).updateUser(eq(1L), any(User.class));
     }
 
     @Test
