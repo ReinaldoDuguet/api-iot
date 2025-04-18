@@ -35,3 +35,6 @@ build/
 *.json
 .gcp/
 
+### ignorar archivos terraform #####
+infra/terraform/.terraform/
+
