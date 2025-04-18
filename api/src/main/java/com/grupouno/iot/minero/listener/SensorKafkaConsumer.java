@@ -16,7 +16,7 @@ public class SensorKafkaConsumer {
         this.processor = processor;
     }
 
-    @KafkaListener(topics = "iot-sensor-data", groupId = "iot-minero-group") // Listener activo en este tópico
+    @KafkaListener(topics = "test-topic", groupId = "iot-minero-group") // Listener activo en este tópico
     public void consume(ConsumerRecord<String, String> record) {
         processor.processKafkaMessage(record.value()); // Solo delega la lógica al procesador
     }

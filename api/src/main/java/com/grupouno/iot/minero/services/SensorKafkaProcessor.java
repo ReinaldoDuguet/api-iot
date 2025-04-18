@@ -12,10 +12,10 @@ public class SensorKafkaProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SensorKafkaProcessor.class); // Logger para logs
     private final ObjectMapper mapper = new ObjectMapper(); // Jackson ObjectMapper
-    private final SensorDataService sensorDataService; // Servicio que guarda las mediciones
+    private final SensorDataServiceListener sensorDataServiceListener; // Servicio que guarda las mediciones
 
-    public SensorKafkaProcessor(SensorDataService sensorDataService) {
-        this.sensorDataService = sensorDataService;
+    public SensorKafkaProcessor(SensorDataServiceListener sensorDataServiceListener) {
+        this.sensorDataServiceListener = sensorDataServiceListener;
     }
 
     public void processKafkaMessage(String messageJson) {
@@ -28,7 +28,7 @@ public class SensorKafkaProcessor {
             }
 
             for (MeasurementDTO measurement : dto.getJson_data()) {
-                sensorDataService.processMeasurement(dto.getApi_key(), measurement); // Delegamos a la capa de servicio
+                sensorDataServiceListener.processMeasurement(dto.getApi_key(), measurement); // Delegamos a la capa de servicio
             }
 
             log.info("✅ Procesado mensaje de sensor con API key: {}", dto.getApi_key());
