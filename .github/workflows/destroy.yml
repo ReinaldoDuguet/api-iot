@@ -1,0 +1,55 @@
+name: Destruir Infraestructura
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Entorno a destruir"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - prod
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: GCP Auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: SSH a VM - Apagar contenedores
+        uses: appleboy/ssh-action@master
+        if: ${{ github.event.inputs.environment == 'dev' }}
+        with:
+          host: ${{ secrets.GCP_VM_IP_DEV }}
+          username: ${{ secrets.GCP_VM_USER_DEV }}
+          key: ${{ secrets.GCP_VM_SSH_KEY_DEV }}
+          script: |
+            cd ~/iot-dev
+            docker compose -f docker-compose.dev.yml down
+            docker system prune -af
+
+      - uses: appleboy/ssh-action@master
+        if: ${{ github.event.inputs.environment == 'prod' }}
+        with:
+          host: ${{ secrets.GCP_VM_IP_PROD }}
+          username: ${{ secrets.GCP_VM_USER_PROD }}
+          key: ${{ secrets.GCP_VM_SSH_KEY_PROD }}
+          script: |
+            cd ~/api-iot
+            docker compose -f docker-compose.deploy.yml down
+            docker system prune -af
+
+      - name: Init Terraform
+        run: terraform -chdir=infra/${{ github.event.inputs.environment }} init
+
+      - name: Terraform Destroy
+        run: terraform -chdir=infra/${{ github.event.inputs.environment }} destroy -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: '${{ secrets.GCP_SA_KEY }}'

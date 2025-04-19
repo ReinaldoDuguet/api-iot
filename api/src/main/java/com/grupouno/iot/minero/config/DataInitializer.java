@@ -110,6 +110,7 @@ public class DataInitializer {
                     return categoryRepository.save(cat);
                 });
 
+
         // Sensor zigbee mqtt Simulado para test
         Sensor sensorMqtt = new Sensor();
         sensorMqtt.setName("Sensor zigbee mqtt test");
@@ -133,6 +134,18 @@ public class DataInitializer {
         sensorTcp.setCreatedAt(LocalDateTime.now());
         sensorTcp.setUpdatedAt(LocalDateTime.now());
         sensorRepository.save(sensorTcp);
+
+        // Sensor zigbee mqtt Simulado para test
+        Sensor sensorKafka = new Sensor();
+        sensorKafka.setName("Sensor kafka test prod");
+        sensorKafka.setApiKey("82ba1908-96c7-4a7b-854c-969a5e389909");
+        sensorKafka.setCategory(category);
+        sensorKafka.setLocation(location);
+        sensorKafka.setMetadata(Map.of("modelo", "4.0_ind"));
+        sensorKafka.setActive(true);
+        sensorKafka.setCreatedAt(LocalDateTime.now());
+        sensorKafka.setUpdatedAt(LocalDateTime.now());
+        sensorRepository.save(sensorKafka);
 
         System.out.println("✅ Datos de prueba creados correctamente.");
     }

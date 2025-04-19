@@ -1,6 +1,8 @@
 package com.grupouno.iot.minero.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.grupouno.iot.minero.dto.UserCreateRequest;
 import com.grupouno.iot.minero.models.User;
 import com.grupouno.iot.minero.services.UserService;
@@ -13,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,9 @@ class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     @BeforeEach
     void setUp() {
@@ -46,12 +49,12 @@ class UserControllerTest {
         user1.setId(1L);
         user1.setUsername("user1");
         user1.setPasswordHash("hashed_password");
-        
+
         User user2 = new User();
         user2.setId(2L);
         user2.setUsername("user2");
         user2.setPasswordHash("hashed_password");
-        
+
         List<User> users = Arrays.asList(user1, user2);
         when(userService.getAllUsers()).thenReturn(users);
 
@@ -68,7 +71,7 @@ class UserControllerTest {
         user.setId(1L);
         user.setUsername("user1");
         user.setPasswordHash("hashed_password");
-        
+
         when(userService.getUserById(1L)).thenReturn(Optional.of(user));
 
         mockMvc.perform(get("/api/v1/users/1"))

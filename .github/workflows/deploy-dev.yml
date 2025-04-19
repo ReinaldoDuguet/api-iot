@@ -1,0 +1,54 @@
+name: Deploy to GCP - DEV
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy-dev:
+    name: Build & Deploy to DEV
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run tests
+        run: mvn -f api/pom.xml test
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+
+      - name: Build API (DEV)
+        run: mvn -f api/pom.xml clean package -DskipTests
+
+      - name: Docker Build
+        run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/iot-api:dev ./api
+
+      - name: GCP Auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Docker auth GCP
+        run: gcloud auth configure-docker
+
+      - name: Docker Push
+        run: |
+          gcloud auth configure-docker
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/iot-api:dev
+
+      - name: SSH deploy to DEV VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.GCP_VM_IP_DEV }}
+          username: ${{ secrets.GCP_VM_USER_DEV }}
+          key: ${{ secrets.GCP_VM_SSH_KEY_DEV }}
+          script: |
+            cd ~/iot-dev
+            git pull origin develop
+            docker compose -f docker-compose.dev.yml down
+            docker compose -f docker-compose.dev.yml build
+            docker compose -f docker-compose.dev.yml up -d
